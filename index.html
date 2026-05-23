@@ -1,1109 +1,596 @@
 <!DOCTYPE html>
-<html lang="sq">
+<html lang="sq" style="background:#ffffff">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Shpenzimet">
 <title>Shpenzimet</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0f0f11;
-    --surface: #1a1a1f;
-    --surface2: #222228;
-    --surface3: #2a2a32;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --text: #f0f0f2;
-    --text2: #9090a0;
-    --text3: #606070;
-    --accent: #6c63ff;
-    --accent2: #8b85ff;
-    --cash: #34d399;
-    --card: #60a5fa;
-    --danger: #f87171;
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    overflow-x: hidden;
-    padding-bottom: calc(80px + var(--safe-bottom));
-  }
-
-  /* HEADER */
-  .header {
-    background: var(--bg);
-    padding: calc(var(--safe-top) + 16px) 20px 16px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
-  .header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .app-title {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-
-  .app-title span { color: var(--accent2); }
-
-  .header-actions {
-    display: flex;
-    gap: 8px;
-  }
-
-  .icon-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    color: var(--text2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.15s;
-  }
-
-  .icon-btn:active { transform: scale(0.93); background: var(--surface3); }
-
-  /* SUMMARY CARD */
-  .summary-card {
-    margin: 16px;
-    background: linear-gradient(135deg, #1e1b4b 0%, #2d2460 50%, #1a1a2e 100%);
-    border-radius: 20px;
-    padding: 20px;
-    border: 1px solid rgba(108,99,255,0.25);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .summary-card::before {
-    content: '';
-    position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 140px;
-    height: 140px;
-    background: radial-gradient(circle, rgba(108,99,255,0.25) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .summary-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 6px;
-  }
-
-  .summary-total {
-    font-family: 'DM Mono', monospace;
-    font-size: 36px;
-    font-weight: 500;
-    color: #fff;
-    letter-spacing: -1px;
-    margin-bottom: 4px;
-  }
-
-  .summary-total span {
-    font-size: 16px;
-    font-weight: 400;
-    color: rgba(255,255,255,0.5);
-    margin-left: 4px;
-  }
-
-  .summary-period {
-    font-size: 12px;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 16px;
-  }
-
-  .summary-split {
-    display: flex;
-    gap: 12px;
-  }
-
-  .split-item {
-    flex: 1;
-    background: rgba(255,255,255,0.07);
-    border-radius: 12px;
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .split-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .split-info { flex: 1; }
-  .split-name { font-size: 10px; color: rgba(255,255,255,0.45); font-weight: 500; letter-spacing: 0.5px; }
-  .split-val { font-size: 14px; font-weight: 600; font-family: 'DM Mono', monospace; }
-
-  /* FILTER BAR */
-  .filter-bar {
-    padding: 0 16px 12px;
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .filter-bar::-webkit-scrollbar { display: none; }
-
-  .filter-chip {
-    flex-shrink: 0;
-    padding: 7px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .filter-chip.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-
-  .filter-chip:active { transform: scale(0.95); }
-
-  /* SECTION */
-  .section-title {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text3);
-    padding: 4px 20px 8px;
-  }
-
-  /* EXPENSE LIST */
-  .expense-list {
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .expense-item {
-    background: var(--surface);
-    border-radius: 14px;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    animation: slideIn 0.2s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .expense-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    border-radius: 3px 0 0 3px;
-    background: var(--accent);
-  }
-
-  .expense-item.cash::before { background: var(--cash); }
-  .expense-item.card::before { background: var(--card); }
-
-  .expense-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    background: var(--surface2);
-    flex-shrink: 0;
-  }
-
-  .expense-info { flex: 1; min-width: 0; }
-
-  .expense-cat {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .expense-meta {
-    font-size: 12px;
-    color: var(--text3);
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .pay-badge {
-    padding: 2px 7px;
-    border-radius: 6px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-
-  .pay-badge.cash { background: rgba(52,211,153,0.15); color: var(--cash); }
-  .pay-badge.card { background: rgba(96,165,250,0.15); color: var(--card); }
-
-  .expense-amount {
-    font-family: 'DM Mono', monospace;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text);
-    flex-shrink: 0;
-  }
-
-  .expense-amount .currency {
-    font-size: 11px;
-    color: var(--text3);
-    font-weight: 400;
-    margin-left: 2px;
-  }
-
-  .delete-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
-    background: rgba(248,113,113,0.1);
-    border: none;
-    color: var(--danger);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-    font-size: 14px;
-    transition: all 0.15s;
-  }
-
-  .delete-btn:active { transform: scale(0.9); background: rgba(248,113,113,0.25); }
-
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--text3);
-  }
-
-  .empty-icon { font-size: 40px; margin-bottom: 12px; }
-  .empty-title { font-size: 16px; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
-  .empty-sub { font-size: 13px; }
-
-  /* BOTTOM NAV / FAB */
-  .bottom-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 12px 16px calc(var(--safe-bottom) + 12px);
-    background: linear-gradient(to top, var(--bg) 60%, transparent);
-    display: flex;
-    justify-content: center;
-    z-index: 200;
-  }
-
-  .fab {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    padding: 16px 32px;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 8px 24px rgba(108,99,255,0.4);
-    transition: all 0.15s;
-    letter-spacing: 0.2px;
-  }
-
-  .fab:active { transform: scale(0.96); box-shadow: 0 4px 12px rgba(108,99,255,0.3); }
-
-  /* MODAL */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 300;
-    display: none;
-    align-items: flex-end;
-    justify-content: center;
-    animation: fadeIn 0.2s ease;
-  }
-
-  .modal-overlay.open { display: flex; }
-
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .modal {
-    background: var(--surface);
-    border-radius: 24px 24px 0 0;
-    padding: 24px 20px calc(var(--safe-bottom) + 24px);
-    width: 100%;
-    max-width: 480px;
-    animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    border: 1px solid var(--border2);
-    border-bottom: none;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-
-  .modal-handle {
-    width: 36px;
-    height: 4px;
-    background: var(--border2);
-    border-radius: 2px;
-    margin: 0 auto 20px;
-  }
-
-  .modal-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    letter-spacing: -0.3px;
-  }
-
-  .form-group { margin-bottom: 16px; }
-
-  .form-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .form-input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1.5px solid var(--border2);
-    border-radius: 12px;
-    padding: 13px 16px;
-    font-size: 16px;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s;
-    -webkit-appearance: none;
-  }
-
-  .form-input:focus { border-color: var(--accent2); }
-  .form-input::placeholder { color: var(--text3); }
-
-  /* Amount input with currency */
-  .amount-wrap {
-    position: relative;
-  }
-
-  .amount-wrap .form-input {
-    font-family: 'DM Mono', monospace;
-    font-size: 22px;
-    padding-right: 60px;
-    letter-spacing: -0.5px;
-  }
-
-  .amount-currency {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text3);
-    pointer-events: none;
-  }
-
-  /* Category grid */
-  .cat-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  .cat-chip {
-    background: var(--surface2);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .cat-chip .cat-em { font-size: 20px; }
-  .cat-chip .cat-name { font-size: 11px; font-weight: 500; color: var(--text2); line-height: 1.2; }
-
-  .cat-chip.selected {
-    border-color: var(--accent);
-    background: rgba(108,99,255,0.15);
-  }
-
-  .cat-chip.selected .cat-name { color: var(--accent2); }
-  .cat-chip:active { transform: scale(0.95); }
-
-  /* Payment method toggle */
-  .pay-toggle {
-    display: flex;
-    background: var(--surface2);
-    border-radius: 12px;
-    padding: 4px;
-    gap: 4px;
-  }
-
-  .pay-opt {
-    flex: 1;
-    padding: 10px;
-    border-radius: 9px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    color: var(--text3);
-    border: none;
-    background: transparent;
-    font-family: 'DM Sans', sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .pay-opt.active {
-    background: var(--surface3);
-    color: var(--text);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-
-  .pay-opt.kesh.active { color: var(--cash); }
-  .pay-opt.kartele.active { color: var(--card); }
-
-  .btn-submit {
-    width: 100%;
-    padding: 16px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: all 0.15s;
-    letter-spacing: 0.2px;
-    box-shadow: 0 4px 16px rgba(108,99,255,0.35);
-  }
-
-  .btn-submit:active { transform: scale(0.98); }
-  .btn-submit:disabled { opacity: 0.4; }
-
-  /* CATEGORY MANAGEMENT MODAL */
-  .cat-mgmt-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 50vh;
-    overflow-y: auto;
-    margin-bottom: 16px;
-  }
-
-  .cat-mgmt-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--surface2);
-    border-radius: 12px;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-  }
-
-  .cat-mgmt-em { font-size: 22px; flex-shrink: 0; }
-  .cat-mgmt-name { flex: 1; font-size: 15px; font-weight: 500; }
-
-  .cat-del-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 7px;
-    background: rgba(248,113,113,0.1);
-    border: none;
-    color: var(--danger);
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .cat-del-btn:active { background: rgba(248,113,113,0.25); }
-
-  .add-cat-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .emoji-input {
-    width: 56px;
-    background: var(--surface2);
-    border: 1.5px solid var(--border2);
-    border-radius: 12px;
-    padding: 12px;
-    font-size: 20px;
-    text-align: center;
-    color: var(--text);
-    outline: none;
-    font-family: 'DM Sans', sans-serif;
-    flex-shrink: 0;
-  }
-
-  .emoji-input:focus { border-color: var(--accent2); }
-
-  .add-cat-input {
-    flex: 1;
-    background: var(--surface2);
-    border: 1.5px solid var(--border2);
-    border-radius: 12px;
-    padding: 12px 14px;
-    font-size: 15px;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-    outline: none;
-  }
-
-  .add-cat-input:focus { border-color: var(--accent2); }
-  .add-cat-input::placeholder { color: var(--text3); }
-
-  .btn-add-cat {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: var(--accent);
-    border: none;
-    color: #fff;
-    font-size: 22px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.15s;
-  }
-
-  .btn-add-cat:active { transform: scale(0.93); }
-
-  /* Date filter */
-  .date-filter {
-    display: flex;
-    gap: 8px;
-    padding: 0 16px 12px;
-    align-items: center;
-  }
-
-  .date-input-small {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 10px;
-    padding: 9px 12px;
-    font-size: 13px;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-    outline: none;
-    -webkit-appearance: none;
-    color-scheme: dark;
-  }
-
-  .date-input-small:focus { border-color: var(--accent2); }
-
-  .date-sep { font-size: 12px; color: var(--text3); flex-shrink: 0; }
-
-  .clear-filter {
-    padding: 9px 12px;
-    border-radius: 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    color: var(--text3);
-    font-size: 12px;
-    cursor: pointer;
-    flex-shrink: 0;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .clear-filter:active { background: var(--surface3); }
-
-  /* Scrollbar for desktop */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
-
-  .note-field {
-    width: 100%;
-    background: var(--surface2);
-    border: 1.5px solid var(--border2);
-    border-radius: 12px;
-    padding: 13px 16px;
-    font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-    outline: none;
-    resize: none;
-    height: 70px;
-  }
-  .note-field:focus { border-color: var(--accent2); }
-  .note-field::placeholder { color: var(--text3); }
-
-  .expense-note {
-    font-size: 11px;
-    color: var(--text3);
-    font-style: italic;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 180px;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { background: #ffffff !important; }
+
+body {
+  font-family: 'Frutiger','Frutiger LT Pro','Nunito',-apple-system,BlinkMacSystemFont,sans-serif;
+  background: #f7f7f8 !important;
+  color: #111111;
+  min-height: 100vh;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  -webkit-font-smoothing: antialiased;
+  forced-color-adjust: none;
+}
+
+/* Force light everywhere */
+@media (prefers-color-scheme: dark) {
+  html, body, * { forced-color-adjust: none; }
+  body { background: #f7f7f8 !important; color: #111111 !important; }
+}
+
+/* ─── HEADER ─── */
+.hdr {
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8ec;
+  padding: calc(env(safe-area-inset-top,0px) + 14px) 20px 14px;
+  position: sticky; top: 0; z-index: 99;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.hdr-title { font-size: 17px; font-weight: 800; color: #111111; letter-spacing: -0.3px; }
+.hdr-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #f0f0f5; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: #555566;
+}
+.hdr-btn:active { opacity: 0.6; }
+
+/* ─── HERO ─── */
+.hero {
+  background: #ffffff;
+  padding: 30px 24px 24px;
+  text-align: center;
+  border-bottom: 1px solid #e8e8ec;
+}
+.hero-label { font-size: 13px; font-weight: 600; color: #888899; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+.hero-num { font-size: 52px; font-weight: 800; color: #111111; letter-spacing: -3px; line-height: 1; }
+.hero-num .cur { font-size: 20px; font-weight: 600; color: #aaaabc; letter-spacing: 0px; margin-left: 4px; }
+.hero-period { font-size: 13px; color: #aaaabc; font-weight: 500; margin: 6px 0 20px; }
+.hero-row { display: flex; gap: 10px; justify-content: center; }
+.hero-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: #f7f7f8; border-radius: 22px;
+  padding: 9px 18px; border: 1px solid #e8e8ec;
+}
+.hero-pill-dot { width: 8px; height: 8px; border-radius: 50%; }
+.hero-pill-lbl { font-size: 12px; font-weight: 600; color: #888899; }
+.hero-pill-val { font-size: 14px; font-weight: 800; color: #111111; }
+
+/* ─── DATE ROW ─── */
+.date-row {
+  display: flex; gap: 8px; align-items: center;
+  padding: 14px 16px 0;
+}
+.date-inp {
+  flex: 1; background: #ffffff; border: 1px solid #e0e0ea;
+  border-radius: 10px; padding: 9px 12px;
+  font-size: 13px; font-weight: 600; color: #111111;
+  font-family: inherit; outline: none;
+  -webkit-appearance: none; color-scheme: light;
+}
+.date-sep { font-size: 14px; color: #ccccdd; font-weight: 700; }
+.date-clr {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: #f0f0f5; border: none; cursor: pointer;
+  font-size: 12px; font-weight: 700; color: #888899;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ─── CHIPS ─── */
+.chips {
+  display: flex; gap: 7px; padding: 12px 16px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0; padding: 7px 15px; border-radius: 20px;
+  font-size: 13px; font-weight: 700; color: #666677;
+  background: #ffffff; border: 1px solid #e0e0ea;
+  cursor: pointer; font-family: inherit; white-space: nowrap;
+}
+.chip.on { background: #3b82f6; color: #ffffff; border-color: #3b82f6; }
+.chip:active { opacity: 0.7; }
+
+/* ─── LIST ─── */
+.list-lbl { font-size: 12px; font-weight: 700; color: #aaaabc; text-transform: uppercase; letter-spacing: 0.6px; padding: 0 20px 8px; }
+
+.card-list {
+  margin: 0 16px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e8e8ec;
+  overflow: hidden;
+}
+
+.row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid #f0f0f5;
+  background: #ffffff;
+}
+.row:last-child { border-bottom: none; }
+
+.row-ico {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: #f7f7f8; display: flex; align-items: center;
+  justify-content: center; font-size: 18px; flex-shrink: 0;
+}
+.row-info { flex: 1; min-width: 0; }
+.row-name { font-size: 15px; font-weight: 700; color: #111111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row-sub { font-size: 12px; color: #aaaabc; font-weight: 500; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+.row-dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+.row-note { font-size: 11px; color: #ccccdd; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+.row-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.row-amt { font-size: 15px; font-weight: 800; color: #111111; }
+.row-amt .cur { font-size: 10px; font-weight: 600; color: #ccccdd; margin-left: 1px; }
+.row-del {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff0f0; border: none; color: #ff4444;
+  font-size: 11px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.row-del:active { opacity: 0.6; }
+
+.empty {
+  background: #ffffff; border-radius: 16px; border: 1px solid #e8e8ec;
+  margin: 0 16px; padding: 52px 20px; text-align: center;
+}
+.empty-ico { font-size: 40px; margin-bottom: 12px; }
+.empty-t { font-size: 16px; font-weight: 800; color: #111111; margin-bottom: 5px; }
+.empty-s { font-size: 13px; color: #aaaabc; font-weight: 500; }
+
+/* ─── FAB ─── */
+.fab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  padding: 12px 16px calc(env(safe-area-inset-bottom,0px) + 12px);
+  background: linear-gradient(to top, #f7f7f8 60%, transparent);
+  z-index: 98;
+}
+.fab {
+  width: 100%; padding: 16px; border-radius: 14px;
+  background: #3b82f6; color: #ffffff; border: none;
+  font-size: 16px; font-weight: 800; font-family: inherit;
+  cursor: pointer; letter-spacing: -0.2px;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.35);
+}
+.fab:active { opacity: 0.85; }
+
+/* ─── MODAL ─── */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  display: none; align-items: flex-end;
+  background: rgba(17,17,17,0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.overlay.on { display: flex; }
+
+.sheet {
+  width: 100%; max-width: 480px; margin: 0 auto;
+  background: #f7f7f8;
+  border-radius: 22px 22px 0 0;
+  padding: 8px 0 calc(env(safe-area-inset-bottom,0px) + 20px);
+  animation: up 0.26s cubic-bezier(0.32,0.72,0,1);
+  max-height: 92vh; overflow-y: auto;
+}
+@keyframes up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.sheet-handle { width: 38px; height: 5px; background: #ddddea; border-radius: 3px; margin: 0 auto 14px; }
+
+.sheet-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px 14px; border-bottom: 1px solid #e8e8ec; margin-bottom: 6px;
+}
+.sheet-title { font-size: 17px; font-weight: 800; color: #111111; }
+.sheet-cancel { font-size: 15px; font-weight: 600; color: #3b82f6; background: none; border: none; font-family: inherit; cursor: pointer; padding: 0; }
+.sheet-cancel:active { opacity: 0.6; }
+
+.sheet-body { padding: 0 16px; }
+
+/* Form groups */
+.fg { margin-bottom: 20px; }
+.fg-lbl { font-size: 12px; font-weight: 700; color: #888899; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 4px; margin-bottom: 7px; }
+
+.ios-card {
+  background: #ffffff; border-radius: 14px;
+  border: 1px solid #e8e8ec; overflow: hidden;
+}
+.ios-r {
+  display: flex; align-items: center; padding: 0 14px;
+  min-height: 46px; border-bottom: 1px solid #f0f0f5;
+}
+.ios-r:last-child { border-bottom: none; }
+.ios-rl { font-size: 15px; font-weight: 600; color: #111111; flex: 1; }
+.ios-fi {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-size: 15px; font-weight: 600; color: #111111;
+  font-family: inherit; text-align: right; padding: 12px 0;
+  -webkit-appearance: none; color-scheme: light;
+}
+.ios-fi::placeholder { color: #ccccdd; }
+.ios-fi.big { font-size: 26px; font-weight: 800; }
+.ios-unit { font-size: 13px; font-weight: 700; color: #ccccdd; margin-left: 5px; flex-shrink: 0; }
+
+/* Segmented */
+.seg { display: flex; background: #ebebf0; border-radius: 10px; padding: 3px; gap: 3px; }
+.seg-b {
+  flex: 1; padding: 9px; border-radius: 8px;
+  font-size: 14px; font-weight: 700; color: #666677;
+  border: none; background: transparent; font-family: inherit;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  cursor: pointer; transition: all 0.15s;
+}
+.seg-b.on { background: #ffffff; color: #111111; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+/* Cat grid */
+.cat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.cat-t {
+  background: #ffffff; border-radius: 12px; border: 1.5px solid #e8e8ec;
+  padding: 11px 6px 9px; text-align: center; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.cat-t .e { font-size: 22px; }
+.cat-t .n { font-size: 11px; font-weight: 700; color: #888899; }
+.cat-t.sel { border-color: #3b82f6; background: #eff6ff; }
+.cat-t.sel .n { color: #3b82f6; }
+.cat-t:active { opacity: 0.7; }
+
+/* Textarea */
+.ta {
+  width: 100%; background: #ffffff; border: 1px solid #e8e8ec;
+  border-radius: 14px; padding: 13px 14px;
+  font-size: 15px; font-weight: 500; color: #111111;
+  font-family: inherit; outline: none; resize: none; height: 70px;
+}
+.ta::placeholder { color: #ccccdd; }
+
+/* Save btn */
+.save-btn {
+  width: 100%; padding: 16px; background: #3b82f6; color: #ffffff;
+  border: none; border-radius: 14px; font-size: 16px; font-weight: 800;
+  font-family: inherit; cursor: pointer; margin-top: 6px;
+  box-shadow: 0 3px 12px rgba(59,130,246,0.3);
+}
+.save-btn:active { opacity: 0.85; }
+
+/* Cat mgmt */
+.cm-list {
+  background: #ffffff; border-radius: 14px; border: 1px solid #e8e8ec;
+  overflow: hidden; margin-bottom: 14px; max-height: 44vh; overflow-y: auto;
+}
+.cm-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-bottom: 1px solid #f0f0f5;
+  background: #ffffff;
+}
+.cm-row:last-child { border-bottom: none; }
+.cm-em { font-size: 22px; }
+.cm-nm { flex: 1; font-size: 15px; font-weight: 700; color: #111111; }
+.cm-del {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #ff4444; border: none; color: #ffffff;
+  font-size: 13px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.cm-del:active { opacity: 0.7; }
+
+.add-row { display: flex; gap: 8px; align-items: center; }
+.em-in {
+  width: 48px; height: 46px; background: #ffffff;
+  border: 1px solid #e8e8ec; border-radius: 12px;
+  font-size: 20px; text-align: center; outline: none;
+  font-family: inherit; flex-shrink: 0;
+}
+.nm-in {
+  flex: 1; background: #ffffff; border: 1px solid #e8e8ec;
+  border-radius: 12px; padding: 12px 13px;
+  font-size: 15px; font-weight: 600; color: #111111;
+  font-family: inherit; outline: none;
+}
+.nm-in::placeholder { color: #ccccdd; }
+.add-btn-sm {
+  width: 46px; height: 46px; border-radius: 12px;
+  background: #3b82f6; border: none; color: #ffffff;
+  font-size: 24px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+}
+.add-btn-sm:active { opacity: 0.8; }
+.done-btn {
+  width: 100%; margin-top: 14px; padding: 14px;
+  background: #f0f0f5; color: #111111; border: none;
+  border-radius: 14px; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer;
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-inner">
-    <div class="app-title">Shp<span>enz</span>imet</div>
-    <div class="header-actions">
-      <button class="icon-btn" id="btnCats" title="Menaxho kategorite">⚙️</button>
+<div class="hdr">
+  <span class="hdr-title">Shpenzimet</span>
+  <button class="hdr-btn" id="btnCats">⚙️</button>
+</div>
+
+<div class="hero">
+  <div class="hero-label">Totali</div>
+  <div class="hero-num" id="totalAmt">0<span class="cur">ден</span></div>
+  <div class="hero-period" id="heroPeriod">Të gjitha shpenzimet</div>
+  <div class="hero-row">
+    <div class="hero-pill">
+      <div class="hero-pill-dot" style="background:#22c55e"></div>
+      <span class="hero-pill-lbl">Kesh</span>
+      <span class="hero-pill-val" id="cashAmt">0</span>
+    </div>
+    <div class="hero-pill">
+      <div class="hero-pill-dot" style="background:#3b82f6"></div>
+      <span class="hero-pill-lbl">Kartele</span>
+      <span class="hero-pill-val" id="cardAmt">0</span>
     </div>
   </div>
 </div>
 
-<!-- SUMMARY CARD -->
-<div class="summary-card" id="summaryCard">
-  <div class="summary-label">Totali</div>
-  <div class="summary-total" id="totalAmount">0<span>ден</span></div>
-  <div class="summary-period" id="summaryPeriod">Të gjitha shpenzimet</div>
-  <div class="summary-split">
-    <div class="split-item">
-      <div class="split-dot" style="background:var(--cash)"></div>
-      <div class="split-info">
-        <div class="split-name">Kesh</div>
-        <div class="split-val" id="cashTotal" style="color:var(--cash)">0</div>
-      </div>
+<div class="date-row">
+  <input type="date" class="date-inp" id="dFrom">
+  <span class="date-sep">—</span>
+  <input type="date" class="date-inp" id="dTo">
+  <button class="date-clr" id="dClr">✕</button>
+</div>
+
+<div class="chips" id="chipBar"></div>
+
+<div class="list-lbl" id="listLbl">0 shpenzime</div>
+<div id="listEl"></div>
+
+<div class="fab-bar">
+  <button class="fab" id="fabBtn">+ Shto shpenzim</button>
+</div>
+
+<!-- ADD MODAL -->
+<div class="overlay" id="addModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <button class="sheet-cancel" id="cancelAdd">Anulo</button>
+      <span class="sheet-title">Shpenzim i ri</span>
+      <div style="width:48px"></div>
     </div>
-    <div class="split-item">
-      <div class="split-dot" style="background:var(--card)"></div>
-      <div class="split-info">
-        <div class="split-name">Kartele</div>
-        <div class="split-val" id="cardTotal" style="color:var(--card)">0</div>
+    <div class="sheet-body">
+      <div class="fg">
+        <div class="ios-card">
+          <div class="ios-r">
+            <span class="ios-rl">Shuma</span>
+            <input type="number" class="ios-fi big" id="inAmt" placeholder="0" inputmode="decimal" min="0">
+            <span class="ios-unit">ден</span>
+          </div>
+          <div class="ios-r">
+            <span class="ios-rl">Data</span>
+            <input type="date" class="ios-fi" id="inDate">
+          </div>
+        </div>
       </div>
+
+      <div class="fg">
+        <div class="fg-lbl">Mënyra e pagesës</div>
+        <div class="seg">
+          <button class="seg-b on" id="pKesh" onclick="setPay('kesh')">💵 Kesh</button>
+          <button class="seg-b" id="pCard" onclick="setPay('kartele')">💳 Kartele</button>
+        </div>
+      </div>
+
+      <div class="fg">
+        <div class="fg-lbl">Kategoria</div>
+        <div class="cat-grid" id="catGrid"></div>
+      </div>
+
+      <div class="fg">
+        <div class="fg-lbl">Shënim</div>
+        <textarea class="ta" id="inNote" placeholder="Opsional..."></textarea>
+      </div>
+
+      <button class="save-btn" id="saveBtn">Regjistro shpenzimin</button>
     </div>
   </div>
 </div>
 
-<!-- DATE FILTER -->
-<div class="date-filter">
-  <input type="date" class="date-input-small" id="dateFrom" placeholder="Nga">
-  <div class="date-sep">→</div>
-  <input type="date" class="date-input-small" id="dateTo" placeholder="Deri">
-  <button class="clear-filter" id="clearDates">✕</button>
-</div>
-
-<!-- FILTER CHIPS (categories) -->
-<div class="filter-bar" id="filterBar"></div>
-
-<!-- EXPENSE LIST -->
-<div class="section-title" id="listTitle">Shpenzimet</div>
-<div class="expense-list" id="expenseList"></div>
-
-<!-- FAB -->
-<div class="bottom-bar">
-  <button class="fab" id="fabAdd">
-    <span>＋</span> Shto shpenzim
-  </button>
-</div>
-
-<!-- ADD EXPENSE MODAL -->
-<div class="modal-overlay" id="addModal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Shpenzim i ri</div>
-
-    <div class="form-group">
-      <label class="form-label">Shuma</label>
-      <div class="amount-wrap">
-        <input type="number" class="form-input" id="inputAmount" placeholder="0" inputmode="decimal" min="0">
-        <span class="amount-currency">ден</span>
+<!-- CAT MODAL -->
+<div class="overlay" id="catModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <div style="width:48px"></div>
+      <span class="sheet-title">Kategorite</span>
+      <button class="sheet-cancel" id="doneBtn">U krye</button>
+    </div>
+    <div class="sheet-body">
+      <div class="cm-list" id="cmList"></div>
+      <div class="add-row">
+        <input type="text" class="em-in" id="newEm" maxlength="2" placeholder="📦">
+        <input type="text" class="nm-in" id="newNm" placeholder="Emri i kategorisë...">
+        <button class="add-btn-sm" id="addCatBtn">+</button>
       </div>
+      <button class="done-btn" id="doneBtnB">U krye ✓</button>
     </div>
-
-    <div class="form-group">
-      <label class="form-label">Data</label>
-      <input type="date" class="form-input" id="inputDate">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Kategoria</label>
-      <div class="cat-grid" id="catGrid"></div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Mënyra e pagesës</label>
-      <div class="pay-toggle">
-        <button class="pay-opt kesh active" id="payKesh" onclick="selectPay('kesh')">💵 Kesh</button>
-        <button class="pay-opt kartele" id="payKartele" onclick="selectPay('kartele')">💳 Kartele</button>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Shënim (opsional)</label>
-      <textarea class="note-field" id="inputNote" placeholder="p.sh. Fatura nga marketi..."></textarea>
-    </div>
-
-    <button class="btn-submit" id="btnSave">Regjistro shpenzimin</button>
-  </div>
-</div>
-
-<!-- CATEGORY MANAGER MODAL -->
-<div class="modal-overlay" id="catModal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Menaxho kategorite</div>
-    <div class="cat-mgmt-list" id="catMgmtList"></div>
-    <div class="add-cat-row">
-      <input type="text" class="emoji-input" id="newCatEmoji" maxlength="2" placeholder="📦">
-      <input type="text" class="add-cat-input" id="newCatName" placeholder="Emri i kategorisë...">
-      <button class="btn-add-cat" id="btnAddCat">+</button>
-    </div>
-    <button class="btn-submit" style="margin-top:16px;background:var(--surface3);color:var(--text);box-shadow:none;" id="closeCatModal">U krye</button>
   </div>
 </div>
 
 <script>
 const DB = {
-  get expenses() { return JSON.parse(localStorage.getItem('sh_expenses') || '[]'); },
-  set expenses(v) { localStorage.setItem('sh_expenses', JSON.stringify(v)); },
-  get categories() {
-    const def = [
-      {id:'ushqim', name:'Ushqim', em:'🛒'},
-      {id:'restoran', name:'Restorant', em:'🍽️'},
-      {id:'transport', name:'Transport', em:'🚗'},
-      {id:'shendeti', name:'Shëndetësi', em:'💊'},
-      {id:'veshje', name:'Veshje', em:'👗'},
-      {id:'shtepie', name:'Shtëpi', em:'🏠'},
-      {id:'argetime', name:'Argëtim', em:'🎬'},
-      {id:'komunikim', name:'Komun.', em:'📱'},
-      {id:'tjera', name:'Tjera', em:'📦'},
+  get ex() { return JSON.parse(localStorage.getItem('shp_ex')||'[]'); },
+  set ex(v) { localStorage.setItem('shp_ex',JSON.stringify(v)); },
+  get cats() {
+    const d=[
+      {id:'ushqim',n:'Ushqim',e:'🛒'},{id:'restoran',n:'Restorant',e:'🍽️'},
+      {id:'transport',n:'Transport',e:'🚗'},{id:'shendeti',n:'Shëndetësi',e:'💊'},
+      {id:'veshje',n:'Veshje',e:'👗'},{id:'shtepie',n:'Shtëpi',e:'🏠'},
+      {id:'argetime',n:'Argëtim',e:'🎬'},{id:'komunikim',n:'Komun.',e:'📱'},
+      {id:'tjera',n:'Tjera',e:'📦'},
     ];
-    return JSON.parse(localStorage.getItem('sh_categories') || JSON.stringify(def));
+    return JSON.parse(localStorage.getItem('shp_cats')||JSON.stringify(d));
   },
-  set categories(v) { localStorage.setItem('sh_categories', JSON.stringify(v)); }
+  set cats(v) { localStorage.setItem('shp_cats',JSON.stringify(v)); }
 };
 
-let selectedCat = null;
-let selectedPay = 'kesh';
-let filterCat = 'all';
-let dateFrom = '';
-let dateTo = '';
+const fmt = n => Number(n).toLocaleString('mk-MK');
+const td = () => new Date().toISOString().slice(0,10);
 
-function fmt(n) {
-  return Number(n).toLocaleString('mk-MK');
+let selCat=null, selPay='kesh', fCat='all', dF='', dT='';
+
+function setPay(p) {
+  selPay=p;
+  document.getElementById('pKesh').classList.toggle('on',p==='kesh');
+  document.getElementById('pCard').classList.toggle('on',p==='kartele');
 }
 
-function today() {
-  return new Date().toISOString().slice(0, 10);
+function renderChips() {
+  let h=`<button class="chip ${fCat==='all'?'on':''}" onclick="setF('all')">Të gjitha</button>`;
+  DB.cats.forEach(c=>{ h+=`<button class="chip ${fCat===c.id?'on':''}" onclick="setF('${c.id}')">${c.e} ${c.n}</button>`; });
+  document.getElementById('chipBar').innerHTML=h;
 }
 
-function selectPay(type) {
-  selectedPay = type;
-  document.getElementById('payKesh').classList.toggle('active', type === 'kesh');
-  document.getElementById('payKartele').classList.toggle('active', type === 'kartele');
+function setF(id){fCat=id;renderChips();render();}
+
+function getList(){
+  let l=[...DB.ex].reverse();
+  if(fCat!=='all') l=l.filter(e=>e.cid===fCat);
+  if(dF) l=l.filter(e=>e.d>=dF);
+  if(dT) l=l.filter(e=>e.d<=dT);
+  return l;
 }
 
-function renderFilterBar() {
-  const bar = document.getElementById('filterBar');
-  const cats = DB.categories;
-  let html = `<div class="filter-chip ${filterCat==='all'?'active':''}" onclick="setFilter('all')">Të gjitha</div>`;
-  cats.forEach(c => {
-    html += `<div class="filter-chip ${filterCat===c.id?'active':''}" onclick="setFilter('${c.id}')">${c.em} ${c.name}</div>`;
-  });
-  bar.innerHTML = html;
-}
-
-function setFilter(id) {
-  filterCat = id;
-  renderFilterBar();
-  renderList();
-}
-
-function getFiltered() {
-  let list = [...DB.expenses].reverse();
-  if (filterCat !== 'all') list = list.filter(e => e.catId === filterCat);
-  if (dateFrom) list = list.filter(e => e.date >= dateFrom);
-  if (dateTo) list = list.filter(e => e.date <= dateTo);
-  return list;
-}
-
-function renderSummary(list) {
-  const total = list.reduce((s, e) => s + Number(e.amount), 0);
-  const cash = list.filter(e => e.pay === 'kesh').reduce((s, e) => s + Number(e.amount), 0);
-  const card = list.filter(e => e.pay === 'kartele').reduce((s, e) => s + Number(e.amount), 0);
-  document.getElementById('totalAmount').innerHTML = `${fmt(total)}<span>ден</span>`;
-  document.getElementById('cashTotal').textContent = fmt(cash);
-  document.getElementById('cardTotal').textContent = fmt(card);
-
-  let period = 'Të gjitha shpenzimet';
-  if (dateFrom && dateTo) period = `${dateFrom} → ${dateTo}`;
-  else if (dateFrom) period = `Nga ${dateFrom}`;
-  else if (dateTo) period = `Deri ${dateTo}`;
-  else if (filterCat !== 'all') {
-    const c = DB.categories.find(x => x.id === filterCat);
-    if (c) period = `Kategoria: ${c.em} ${c.name}`;
-  }
-  document.getElementById('summaryPeriod').textContent = period;
-}
-
-function renderList() {
-  const list = getFiltered();
-  const cats = DB.categories;
-  renderSummary(list);
-  document.getElementById('listTitle').textContent = `Shpenzimet (${list.length})`;
-
-  const el = document.getElementById('expenseList');
-  if (!list.length) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">💸</div><div class="empty-title">Nuk ka shpenzime</div><div class="empty-sub">Shtype "Shto shpenzim" për të filluar</div></div>`;
+function render(){
+  const l=getList();
+  const tot=l.reduce((s,e)=>s+Number(e.a),0);
+  const cash=l.filter(e=>e.p==='kesh').reduce((s,e)=>s+Number(e.a),0);
+  const card=l.filter(e=>e.p==='kartele').reduce((s,e)=>s+Number(e.a),0);
+  document.getElementById('totalAmt').innerHTML=`${fmt(tot)}<span class="cur">ден</span>`;
+  document.getElementById('cashAmt').textContent=fmt(cash);
+  document.getElementById('cardAmt').textContent=fmt(card);
+  document.getElementById('listLbl').textContent=`${l.length} shpenzime`;
+  let per='Të gjitha shpenzimet';
+  if(dF&&dT) per=`${dF} — ${dT}`;
+  else if(dF) per=`Nga ${dF}`;
+  else if(dT) per=`Deri ${dT}`;
+  else if(fCat!=='all'){const c=DB.cats.find(x=>x.id===fCat);if(c)per=`${c.e} ${c.n}`;}
+  document.getElementById('heroPeriod').textContent=per;
+  const el=document.getElementById('listEl');
+  if(!l.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">💸</div><div class="empty-t">Nuk ka shpenzime</div><div class="empty-s">Shtype "+ Shto shpenzim" për të filluar</div></div>`;
     return;
   }
-
-  el.innerHTML = list.map(e => {
-    const cat = cats.find(c => c.id === e.catId) || {name: e.catId, em: '📦'};
-    return `
-      <div class="expense-item ${e.pay}">
-        <div class="expense-icon">${cat.em}</div>
-        <div class="expense-info">
-          <div class="expense-cat">${cat.name}</div>
-          <div class="expense-meta">
-            <span>${e.date}</span>
-            <span class="pay-badge ${e.pay}">${e.pay === 'kesh' ? 'Kesh' : 'Kartele'}</span>
-          </div>
-          ${e.note ? `<div class="expense-note">${e.note}</div>` : ''}
-        </div>
-        <div class="expense-amount">${fmt(e.amount)}<span class="currency">ден</span></div>
-        <button class="delete-btn" onclick="deleteExp('${e.id}')">✕</button>
+  const rows=l.map(e=>{
+    const cat=DB.cats.find(c=>c.id===e.cid)||{n:e.cid,e:'📦'};
+    const dc=e.p==='kesh'?'#22c55e':'#3b82f6';
+    return `<div class="row">
+      <div class="row-ico">${cat.e}</div>
+      <div class="row-info">
+        <div class="row-name">${cat.n}</div>
+        <div class="row-sub"><span class="row-dot" style="background:${dc}"></span><span>${e.p==='kesh'?'Kesh':'Kartele'}</span><span>·</span><span>${e.d}</span></div>
+        ${e.nt?`<div class="row-note">${e.nt}</div>`:''}
       </div>
-    `;
+      <div class="row-right">
+        <div class="row-amt">${fmt(e.a)}<span class="cur">ден</span></div>
+        <button class="row-del" onclick="delE('${e.id}')">✕</button>
+      </div>
+    </div>`;
   }).join('');
+  el.innerHTML=`<div class="card-list">${rows}</div>`;
 }
 
-function renderCatGrid() {
-  const cats = DB.categories;
-  document.getElementById('catGrid').innerHTML = cats.map(c => `
-    <div class="cat-chip ${selectedCat===c.id?'selected':''}" onclick="selectCat('${c.id}')">
-      <span class="cat-em">${c.em}</span>
-      <span class="cat-name">${c.name}</span>
-    </div>
-  `).join('');
+function renderCatGrid(){
+  document.getElementById('catGrid').innerHTML=DB.cats.map(c=>
+    `<div class="cat-t ${selCat===c.id?'sel':''}" onclick="sc('${c.id}')"><span class="e">${c.e}</span><span class="n">${c.n}</span></div>`
+  ).join('');
 }
 
-function selectCat(id) {
-  selectedCat = id;
-  renderCatGrid();
+function sc(id){selCat=id;renderCatGrid();}
+
+function openAdd(){
+  selCat=null;selPay='kesh';
+  document.getElementById('inAmt').value='';
+  document.getElementById('inDate').value=td();
+  document.getElementById('inNote').value='';
+  setPay('kesh');renderCatGrid();
+  document.getElementById('addModal').classList.add('on');
+  setTimeout(()=>document.getElementById('inAmt').focus(),300);
 }
 
-function openAddModal() {
-  selectedCat = null;
-  selectedPay = 'kesh';
-  document.getElementById('inputAmount').value = '';
-  document.getElementById('inputDate').value = today();
-  document.getElementById('inputNote').value = '';
-  selectPay('kesh');
-  renderCatGrid();
-  document.getElementById('addModal').classList.add('open');
-  setTimeout(() => document.getElementById('inputAmount').focus(), 350);
-}
+function closeM(id){document.getElementById(id).classList.remove('on');}
 
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
+document.getElementById('fabBtn').onclick=openAdd;
+document.getElementById('cancelAdd').onclick=()=>closeM('addModal');
+document.getElementById('addModal').addEventListener('click',function(e){if(e.target===this)closeM('addModal');});
+document.getElementById('catModal').addEventListener('click',function(e){if(e.target===this)closeM('catModal');});
 
-document.getElementById('fabAdd').onclick = openAddModal;
-
-document.getElementById('addModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('addModal');
-});
-
-document.getElementById('catModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal('catModal');
-});
-
-document.getElementById('btnSave').onclick = function() {
-  const amount = parseFloat(document.getElementById('inputAmount').value);
-  const date = document.getElementById('inputDate').value;
-  const note = document.getElementById('inputNote').value.trim();
-
-  if (!amount || amount <= 0) {
-    document.getElementById('inputAmount').focus();
-    document.getElementById('inputAmount').style.borderColor = 'var(--danger)';
-    setTimeout(() => document.getElementById('inputAmount').style.borderColor = '', 1500);
-    return;
+document.getElementById('saveBtn').onclick=function(){
+  const a=parseFloat(document.getElementById('inAmt').value);
+  const d=document.getElementById('inDate').value;
+  const nt=document.getElementById('inNote').value.trim();
+  const inp=document.getElementById('inAmt');
+  if(!a||a<=0){inp.style.color='#ff4444';setTimeout(()=>inp.style.color='',1200);return;}
+  if(!selCat){
+    const g=document.getElementById('catGrid');
+    g.style.outline='2px solid #ff4444';g.style.borderRadius='12px';
+    setTimeout(()=>{g.style.outline='';},1200);return;
   }
-
-  if (!selectedCat) {
-    document.getElementById('catGrid').style.outline = '2px solid var(--danger)';
-    document.getElementById('catGrid').style.borderRadius = '12px';
-    setTimeout(() => { document.getElementById('catGrid').style.outline = ''; }, 1500);
-    return;
-  }
-
-  const expenses = DB.expenses;
-  expenses.push({
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2),
-    amount,
-    date,
-    catId: selectedCat,
-    pay: selectedPay,
-    note,
-    ts: Date.now()
-  });
-  DB.expenses = expenses;
-
-  closeModal('addModal');
-  renderList();
-  renderFilterBar();
+  const ex=DB.ex;
+  ex.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2),a,d,cid:selCat,p:selPay,nt,ts:Date.now()});
+  DB.ex=ex;closeM('addModal');render();renderChips();
 };
 
-function deleteExp(id) {
-  if (!confirm('Fshi këtë shpenzim?')) return;
-  DB.expenses = DB.expenses.filter(e => e.id !== id);
-  renderList();
+function delE(id){
+  if(!confirm('Fshi këtë shpenzim?'))return;
+  DB.ex=DB.ex.filter(e=>e.id!==id);render();
 }
 
-// CATEGORY MANAGER
-document.getElementById('btnCats').onclick = function() {
-  renderCatMgmt();
-  document.getElementById('catModal').classList.add('open');
-};
+document.getElementById('btnCats').onclick=()=>{renderCM();document.getElementById('catModal').classList.add('on');};
+document.getElementById('doneBtn').onclick=()=>{closeM('catModal');renderChips();render();};
+document.getElementById('doneBtnB').onclick=()=>{closeM('catModal');renderChips();render();};
 
-document.getElementById('closeCatModal').onclick = function() {
-  closeModal('catModal');
-  renderFilterBar();
-  renderList();
-};
-
-function renderCatMgmt() {
-  const cats = DB.categories;
-  document.getElementById('catMgmtList').innerHTML = cats.map(c => `
-    <div class="cat-mgmt-item">
-      <span class="cat-mgmt-em">${c.em}</span>
-      <span class="cat-mgmt-name">${c.name}</span>
-      <button class="cat-del-btn" onclick="deleteCat('${c.id}')">✕</button>
-    </div>
-  `).join('');
+function renderCM(){
+  document.getElementById('cmList').innerHTML=DB.cats.map(c=>
+    `<div class="cm-row"><span class="cm-em">${c.e}</span><span class="cm-nm">${c.n}</span><button class="cm-del" onclick="delCat('${c.id}')">−</button></div>`
+  ).join('');
 }
 
-function deleteCat(id) {
-  const inUse = DB.expenses.some(e => e.catId === id);
-  if (inUse && !confirm('Kjo kategori ka shpenzime. Fshi gjithsesi?')) return;
-  DB.categories = DB.categories.filter(c => c.id !== id);
-  renderCatMgmt();
+function delCat(id){
+  if(DB.ex.some(e=>e.cid===id)&&!confirm('Ka shpenzime. Fshi?'))return;
+  DB.cats=DB.cats.filter(c=>c.id!==id);renderCM();
 }
 
-document.getElementById('btnAddCat').onclick = function() {
-  const em = document.getElementById('newCatEmoji').value.trim() || '📦';
-  const name = document.getElementById('newCatName').value.trim();
-  if (!name) return;
-
-  const id = name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now().toString(36);
-  const cats = DB.categories;
-  cats.push({ id, name, em });
-  DB.categories = cats;
-
-  document.getElementById('newCatEmoji').value = '';
-  document.getElementById('newCatName').value = '';
-  renderCatMgmt();
+document.getElementById('addCatBtn').onclick=function(){
+  const e=document.getElementById('newEm').value.trim()||'📦';
+  const n=document.getElementById('newNm').value.trim();
+  if(!n)return;
+  const cats=DB.cats;
+  cats.push({id:n.toLowerCase().replace(/\s+/g,'_')+'_'+Date.now().toString(36),n,e});
+  DB.cats=cats;
+  document.getElementById('newEm').value='';
+  document.getElementById('newNm').value='';
+  renderCM();
 };
 
-// DATE FILTERS
-document.getElementById('dateFrom').onchange = function() {
-  dateFrom = this.value;
-  renderList();
+document.getElementById('dFrom').onchange=function(){dF=this.value;render();};
+document.getElementById('dTo').onchange=function(){dT=this.value;render();};
+document.getElementById('dClr').onclick=function(){
+  dF='';dT='';
+  document.getElementById('dFrom').value='';
+  document.getElementById('dTo').value='';
+  render();
 };
 
-document.getElementById('dateTo').onchange = function() {
-  dateTo = this.value;
-  renderList();
-};
-
-document.getElementById('clearDates').onclick = function() {
-  dateFrom = '';
-  dateTo = '';
-  document.getElementById('dateFrom').value = '';
-  document.getElementById('dateTo').value = '';
-  renderList();
-};
-
-// INIT
-renderFilterBar();
-renderList();
+renderChips();render();
 </script>
 </body>
 </html>
