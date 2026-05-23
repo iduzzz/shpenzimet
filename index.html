@@ -429,7 +429,7 @@ function openAdd(type){
   document.getElementById('fAmt').value='';
   document.getElementById('fDate').value=today();
   document.getElementById('fNote').value='';
-  document.getElementById('payRow').style.display=type==='inc'?'none':'block';
+  document.getElementById('payRow').style.display='block';
   document.getElementById('catLbl').textContent=type==='inc'?'Burimi':'Kategoria';
   document.getElementById('saveBtn').className='save-btn '+(type==='inc'?'save-inc':'save-exp');
   document.getElementById('saveBtn').textContent=type==='inc'?'Regjistro të hyrat':'Regjistro shpenzimin';
@@ -447,7 +447,7 @@ function openEdit(id){
   document.getElementById('fAmt').value=e.a;
   document.getElementById('fDate').value=e.d;
   document.getElementById('fNote').value=e.nt||'';
-  document.getElementById('payRow').style.display=e.t==='inc'?'none':'block';
+  document.getElementById('payRow').style.display='block';
   document.getElementById('catLbl').textContent=e.t==='inc'?'Burimi':'Kategoria';
   document.getElementById('saveBtn').className='save-btn '+(e.t==='inc'?'save-inc':'save-exp');
   document.getElementById('saveBtn').textContent='Ruaj ndryshimet';
