@@ -183,9 +183,10 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 
 /* ── VISA WIDGET ── */
 .visa-wrap{margin:12px 16px 0;background:linear-gradient(135deg,#1c2b4a 0%,#1a3a6b 100%);border-radius:16px;padding:16px 18px;position:relative;overflow:hidden;color:#fff}
-.visa-wrap::before{content:'VISA';position:absolute;right:18px;top:16px;font-size:18px;font-weight:900;font-style:italic;color:rgba(255,255,255,0.5);letter-spacing:1px}
 .visa-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.visa-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.8px}
+.visa-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:6px}
+.visa-top-right{display:flex;align-items:center;gap:8px}
+.visa-logo-txt{font-size:16px;font-weight:900;font-style:italic;color:rgba(255,255,255,0.4);letter-spacing:1px}
 .visa-cfg-btn{background:rgba(255,255,255,0.12);border:none;color:rgba(255,255,255,0.7);font-size:12px;border-radius:8px;padding:5px 10px;cursor:pointer;font-family:inherit;font-weight:600}
 .visa-cfg-btn:active{opacity:.6}
 .visa-numbers{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
@@ -212,8 +213,11 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 <div class="hdr">
   <span class="hdr-title">💰 Financat</span>
   <div class="hdr-btns">
-    <button class="icon-btn" onclick="openMgmt('exp')" title="Menaxho kategorite">📂</button>
-    <button class="icon-btn" onclick="openMgmt('inc')" title="Menaxho burimet">💼</button>
+    <button class="icon-btn" onclick="exportData()" title="Eksporto">💾</button>
+    <button class="icon-btn" onclick="document.getElementById('importFile').click()" title="Importo">📂</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+    <button class="icon-btn" onclick="openMgmt('exp')" title="Kategoritë">📁</button>
+    <button class="icon-btn" onclick="openMgmt('inc')" title="Burimet">💼</button>
   </div>
 </div>
 
@@ -240,8 +244,11 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 <!-- VISA WIDGET -->
 <div class="visa-wrap">
   <div class="visa-top">
-    <span class="visa-title">💳 Kartela VISA Kredite</span>
-    <button class="visa-cfg-btn" onclick="openVisaCfg()">⚙️ Cilësimet</button>
+    <span class="visa-title">💳 KARTELA VISA KREDITE</span>
+    <div class="visa-top-right">
+      <span class="visa-logo-txt">VISA</span>
+      <button class="visa-cfg-btn" onclick="openVisaCfg()">⚙️ Cilësimet</button>
+    </div>
   </div>
   <div class="visa-numbers">
     <div class="visa-used-block">
@@ -708,6 +715,47 @@ function addCat(){
 function closeM(id){document.getElementById(id).classList.remove('on');}
 function overlayClick(e,id){if(e.target===document.getElementById(id))closeM(id);}
 
+
+function exportData(){
+  const data = {
+    ex: DB.ex,
+    cats: DB.cats,
+    src: DB.src,
+    cards: DB.cards,
+    visa: VCFG.get(),
+    exported: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'financat_backup_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    try{
+      const data = JSON.parse(ev.target.result);
+      if(!confirm('Kjo do të zëvendësojë të gjitha të dhënat aktuale. Vazhdo?')) return;
+      if(data.ex) DB.ex = data.ex;
+      if(data.cats) DB.cats = data.cats;
+      if(data.src) DB.src = data.src;
+      if(data.cards) DB.cards = data.cards;
+      if(data.visa) VCFG.set(data.visa);
+      renderChips(); render(); renderVisa();
+      alert('✅ Të dhënat u importuan me sukses!');
+    }catch(err){
+      alert('❌ Skedari nuk është valid.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
 
 // ── VISA ──
 const VCFG = {
