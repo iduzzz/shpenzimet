@@ -63,9 +63,9 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .erow-ico{width:38px;height:38px;border-radius:10px;background:#f2f2f7;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .erow-info{flex:1;min-width:0}
 .erow-name{font-size:15px;font-weight:700;color:#1c1c1e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.erow-sub{font-size:12px;color:#aeaeb2;font-weight:500;margin-top:2px;display:flex;align-items:center;gap:5px}
+.erow-sub{font-size:12px;color:#3a3a3c;font-weight:600;margin-top:2px;display:flex;align-items:center;gap:5px}
 .erow-dot{width:5px;height:5px;border-radius:50%;display:inline-block;flex-shrink:0}
-.erow-note{font-size:11px;color:#c7c7cc;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.erow-note{font-size:12px;color:#636366;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
 .erow-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
 .erow-amt{font-size:15px;font-weight:800}
 .erow-amt.exp{color:#ff3b30}
@@ -128,7 +128,7 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .save-exp{background:#ff3b30;box-shadow:0 3px 12px rgba(255,59,48,.3)}
 .save-inc{background:#34c759;box-shadow:0 3px 12px rgba(52,199,89,.3)}
 
-/* CAT MANAGER */
+
 .cm-list{background:#fff;border-radius:12px;border:1px solid #e5e5ea;overflow:hidden;margin-bottom:14px;max-height:42vh;overflow-y:auto}
 .cm-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #f2f2f7;background:#fff}
 .cm-row:last-child{border-bottom:none}
@@ -184,6 +184,8 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
       <span class="pill-val" id="expTotal">0</span>
     </div>
   </div>
+</div>
+
 </div>
 
 <div class="tab-bar">
@@ -475,14 +477,12 @@ function saveForm(){
   }
   DB.ex=ex;
   closeM('formModal');
-  renderChips(); render();
-}
+  renderChips(); render(); }
 
 function delEx(id){
   if(!confirm('Fshi këtë transaksion?')) return;
   DB.ex=DB.ex.filter(e=>e.id!==id);
-  render();
-}
+  render(); }
 
 // ── MANAGEMENT ──
 function openMgmt(type){
@@ -566,7 +566,7 @@ function addCat(){
 function closeM(id){document.getElementById(id).classList.remove('on');}
 function overlayClick(e,id){if(e.target===document.getElementById(id))closeM(id);}
 
-// ── FIX entries pa tip (të vjetra = shpenzime) ──
+// ── FIX entries pa tip ──
 (function fixTypes(){
   const ex=DB.ex;
   let changed=false;
