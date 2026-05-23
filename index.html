@@ -6,45 +6,57 @@
 <meta name="color-scheme" content="light">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Shpenzimet">
-<title>Shpenzimet</title>
+<meta name="apple-mobile-web-app-title" content="Financat">
+<title>Financat</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:#f5f5f7!important;color:#1c1c1e!important}
-body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7;color:#1c1c1e;min-height:100vh;padding-bottom:calc(90px + env(safe-area-inset-bottom,0px));-webkit-font-smoothing:antialiased}
+body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7;color:#1c1c1e;min-height:100vh;padding-bottom:calc(100px + env(safe-area-inset-bottom,0px));-webkit-font-smoothing:antialiased}
 @media(prefers-color-scheme:dark){html,body{background:#f5f5f7!important;color:#1c1c1e!important}}
 
+/* HEADER */
 .hdr{background:#fff;border-bottom:1px solid #e5e5ea;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .hdr-title{font-size:17px;font-weight:800;color:#1c1c1e}
-.icon-btn{width:34px;height:34px;border-radius:50%;background:#f2f2f7;border:none;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;color:#3a3a3c}
+.hdr-btns{display:flex;gap:8px}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:#f2f2f7;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
 .icon-btn:active{opacity:.5}
 
-.hero{background:#fff;padding:28px 20px 22px;text-align:center;border-bottom:1px solid #e5e5ea}
+/* HERO */
+.hero{background:#fff;padding:24px 20px 20px;text-align:center;border-bottom:1px solid #e5e5ea}
 .hero-lbl{font-size:12px;font-weight:700;color:#8e8e93;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-.hero-num{font-size:50px;font-weight:800;color:#1c1c1e;letter-spacing:-2px;line-height:1}
-.hero-cur{font-size:18px;font-weight:600;color:#aeaeb2;letter-spacing:0;margin-left:4px}
-.hero-period{font-size:13px;color:#aeaeb2;font-weight:500;margin:6px 0 18px}
-.hero-pills{display:flex;gap:10px;justify-content:center}
-.pill{display:flex;align-items:center;gap:7px;background:#f2f2f7;border-radius:20px;padding:8px 16px;border:1px solid #e5e5ea}
-.pill-dot{width:7px;height:7px;border-radius:50%}
+.hero-num{font-size:46px;font-weight:800;letter-spacing:-2px;line-height:1;color:#1c1c1e}
+.hero-num.positive{color:#1c1c1e}
+.hero-num.negative{color:#ff3b30}
+.hero-cur{font-size:17px;font-weight:600;color:#aeaeb2;letter-spacing:0;margin-left:4px}
+.hero-period{font-size:13px;color:#aeaeb2;font-weight:500;margin:5px 0 16px}
+.hero-row{display:flex;gap:10px;justify-content:center}
+.pill{display:flex;align-items:center;gap:7px;background:#f2f2f7;border-radius:20px;padding:8px 14px;border:1px solid #e5e5ea}
+.pill-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .pill-lbl{font-size:12px;font-weight:600;color:#8e8e93}
-.pill-val{font-size:14px;font-weight:800;color:#1c1c1e}
+.pill-val{font-size:13px;font-weight:800;color:#1c1c1e}
 
-.date-row{display:flex;gap:8px;align-items:center;padding:14px 16px 0}
+/* TAB BAR */
+.tab-bar{display:flex;background:#fff;border-bottom:1px solid #e5e5ea;padding:0 16px}
+.tab{flex:1;padding:12px 8px;text-align:center;font-size:14px;font-weight:700;color:#8e8e93;border:none;background:none;font-family:inherit;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.tab.on{color:#007aff;border-bottom-color:#007aff}
+.tab:active{opacity:.6}
+
+/* DATE + CHIPS */
+.date-row{display:flex;gap:8px;align-items:center;padding:12px 16px 0}
 .date-inp{flex:1;background:#fff;border:1px solid #e5e5ea;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;color:#1c1c1e;font-family:inherit;outline:none;-webkit-appearance:none;color-scheme:light}
 .date-sep{font-size:14px;color:#c7c7cc;font-weight:700}
 .date-clr{width:30px;height:30px;border-radius:50%;background:#f2f2f7;border:none;cursor:pointer;font-size:12px;font-weight:700;color:#8e8e93;display:flex;align-items:center;justify-content:center}
 .date-clr:active{opacity:.5}
-
-.chips{display:flex;gap:7px;padding:12px 16px;overflow-x:auto;scrollbar-width:none}
+.chips{display:flex;gap:7px;padding:10px 16px;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex-shrink:0;padding:7px 14px;border-radius:18px;font-size:13px;font-weight:700;color:#636366;background:#fff;border:1px solid #e5e5ea;cursor:pointer;font-family:inherit}
 .chip.on{background:#007aff;color:#fff;border-color:#007aff}
+.chip.on-green{background:#34c759;color:#fff;border-color:#34c759}
 .chip:active{opacity:.7}
-
 .list-lbl{font-size:12px;font-weight:700;color:#aeaeb2;text-transform:uppercase;letter-spacing:.6px;padding:4px 20px 8px}
 
+/* ROWS */
 .card-wrap{margin:0 16px;background:#fff;border-radius:14px;border:1px solid #e5e5ea;overflow:hidden}
 .erow{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-bottom:1px solid #f2f2f7}
 .erow:last-child{border-bottom:none}
@@ -53,25 +65,30 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .erow-name{font-size:15px;font-weight:700;color:#1c1c1e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .erow-sub{font-size:12px;color:#aeaeb2;font-weight:500;margin-top:2px;display:flex;align-items:center;gap:5px}
 .erow-dot{width:5px;height:5px;border-radius:50%;display:inline-block;flex-shrink:0}
-.erow-note{font-size:11px;color:#c7c7cc;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.erow-note{font-size:11px;color:#c7c7cc;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
 .erow-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
-.erow-amt{font-size:15px;font-weight:800;color:#1c1c1e}
+.erow-amt{font-size:15px;font-weight:800}
+.erow-amt.exp{color:#ff3b30}
+.erow-amt.inc{color:#34c759}
 .erow-amt .cur{font-size:10px;font-weight:600;color:#c7c7cc;margin-left:1px}
 .erow-btns{display:flex;gap:5px}
 .btn-edit{width:22px;height:22px;border-radius:50%;background:#e8f0fe;border:none;color:#007aff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
 .btn-del{width:22px;height:22px;border-radius:50%;background:#fff0f0;border:none;color:#ff3b30;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
 .btn-edit:active,.btn-del:active{opacity:.5}
 
-.empty{background:#fff;border-radius:14px;border:1px solid #e5e5ea;margin:0 16px;padding:52px 20px;text-align:center}
-.empty-ico{font-size:40px;margin-bottom:12px}
-.empty-t{font-size:16px;font-weight:800;color:#1c1c1e;margin-bottom:5px}
+.empty{background:#fff;border-radius:14px;border:1px solid #e5e5ea;margin:0 16px;padding:48px 20px;text-align:center}
+.empty-ico{font-size:38px;margin-bottom:10px}
+.empty-t{font-size:16px;font-weight:800;color:#1c1c1e;margin-bottom:4px}
 .empty-s{font-size:13px;color:#aeaeb2;font-weight:500}
 
-.fab-bar{position:fixed;bottom:0;left:0;right:0;padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 12px);background:linear-gradient(to top,#f5f5f7 55%,transparent);z-index:49}
-.fab{width:100%;padding:16px;border-radius:14px;background:#007aff;color:#fff;border:none;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(0,122,255,.3)}
+/* FAB */
+.fab-bar{position:fixed;bottom:0;left:0;right:0;padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 12px);background:linear-gradient(to top,#f5f5f7 55%,transparent);z-index:49;display:flex;gap:10px}
+.fab{flex:1;padding:15px;border-radius:14px;color:#fff;border:none;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer}
 .fab:active{opacity:.85}
+.fab-exp{background:#ff3b30;box-shadow:0 4px 14px rgba(255,59,48,.3)}
+.fab-inc{background:#34c759;box-shadow:0 4px 14px rgba(52,199,89,.3)}
 
-/* MODALS */
+/* MODAL */
 .overlay{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;background:rgba(0,0,0,.2);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 .overlay.on{display:flex}
 .sheet{width:100%;max-width:480px;margin:0 auto;background:#f5f5f7;border-radius:22px 22px 0 0;padding:8px 0 calc(env(safe-area-inset-bottom,0px) + 20px);animation:up .26s cubic-bezier(.32,.72,0,1);max-height:93vh;overflow-y:auto}
@@ -82,8 +99,7 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .sheet-cancel{font-size:16px;font-weight:600;color:#007aff;background:none;border:none;font-family:inherit;cursor:pointer;padding:4px 0}
 .sheet-cancel:active{opacity:.5}
 .sheet-body{padding:0 16px}
-
-.fg{margin-bottom:20px}
+.fg{margin-bottom:18px}
 .fg-lbl{font-size:12px;font-weight:700;color:#8e8e93;text-transform:uppercase;letter-spacing:.5px;padding:0 4px;margin-bottom:7px}
 .ios-card{background:#fff;border-radius:12px;border:1px solid #e5e5ea;overflow:hidden}
 .ios-r{display:flex;align-items:center;padding:0 14px;min-height:46px;border-bottom:1px solid #f2f2f7}
@@ -93,44 +109,42 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .ios-fi::placeholder{color:#c7c7cc}
 .ios-fi.big{font-size:26px;font-weight:800}
 .ios-unit{font-size:13px;font-weight:700;color:#c7c7cc;margin-left:5px;flex-shrink:0}
-
 .seg{display:flex;background:#e5e5ea;border-radius:10px;padding:3px;gap:3px}
 .seg-b{flex:1;padding:9px;border-radius:8px;font-size:14px;font-weight:700;color:#636366;border:none;background:transparent;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:all .15s}
 .seg-b.on{background:#fff;color:#1c1c1e;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.cat-t{background:#fff;border-radius:12px;border:1.5px solid #e5e5ea;padding:11px 6px 9px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
-.cat-t .e{font-size:22px}
-.cat-t .n{font-size:11px;font-weight:700;color:#636366}
+.cat-t{background:#fff;border-radius:12px;border:1.5px solid #e5e5ea;padding:10px 6px 8px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.cat-t .e{font-size:21px}
+.cat-t .n{font-size:11px;font-weight:700;color:#636366;line-height:1.2}
 .cat-t.sel{border-color:#007aff;background:#e8f4ff}
 .cat-t.sel .n{color:#007aff}
+.cat-t.sel-green{border-color:#34c759;background:#edfbf1}
+.cat-t.sel-green .n{color:#34c759}
 .cat-t:active{opacity:.7}
-
 .ta{width:100%;background:#fff;border:1px solid #e5e5ea;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:500;color:#1c1c1e;font-family:inherit;outline:none;resize:none;height:68px}
 .ta::placeholder{color:#c7c7cc}
-
-.save-btn{width:100%;padding:16px;background:#007aff;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:6px;box-shadow:0 3px 12px rgba(0,122,255,.3)}
+.save-btn{width:100%;padding:16px;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:6px}
 .save-btn:active{opacity:.85}
+.save-exp{background:#ff3b30;box-shadow:0 3px 12px rgba(255,59,48,.3)}
+.save-inc{background:#34c759;box-shadow:0 3px 12px rgba(52,199,89,.3)}
 
 /* CAT MANAGER */
-.cm-list{background:#fff;border-radius:12px;border:1px solid #e5e5ea;overflow:hidden;margin-bottom:14px;max-height:44vh;overflow-y:auto}
+.cm-list{background:#fff;border-radius:12px;border:1px solid #e5e5ea;overflow:hidden;margin-bottom:14px;max-height:42vh;overflow-y:auto}
 .cm-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #f2f2f7;background:#fff}
 .cm-row:last-child{border-bottom:none}
-.cm-em{font-size:22px;flex-shrink:0}
+.cm-em{font-size:20px;flex-shrink:0}
 .cm-nm{flex:1;font-size:15px;font-weight:700;color:#1c1c1e}
 .cm-edit{width:28px;height:28px;border-radius:8px;background:#e8f4ff;border:none;color:#007aff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cm-del-btn{width:28px;height:28px;border-radius:50%;background:#ff3b30;border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cm-del-btn{width:28px;height:28px;border-radius:50%;background:#ff3b30;border:none;color:#fff;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .cm-edit:active,.cm-del-btn:active{opacity:.6}
-
-.cm-edit-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #f2f2f7;background:#f8f8ff}
+.cm-edit-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #f2f2f7;background:#f0f7ff}
 .cm-edit-row:last-child{border-bottom:none}
-.em-in{width:44px;height:40px;background:#f2f2f7;border:1px solid #e5e5ea;border-radius:8px;font-size:20px;text-align:center;outline:none;font-family:inherit;flex-shrink:0}
+.em-in{width:42px;height:40px;background:#f2f2f7;border:1px solid #e5e5ea;border-radius:8px;font-size:19px;text-align:center;outline:none;font-family:inherit;flex-shrink:0}
 .nm-in{flex:1;background:#f2f2f7;border:1px solid #e5e5ea;border-radius:8px;padding:9px 10px;font-size:14px;font-weight:600;color:#1c1c1e;font-family:inherit;outline:none}
 .nm-in::placeholder{color:#c7c7cc}
 .ok-btn{width:36px;height:36px;border-radius:8px;background:#007aff;border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cancel-btn-sm{width:36px;height:36px;border-radius:8px;background:#f2f2f7;border:none;color:#636366;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ok-btn:active,.cancel-btn-sm:active{opacity:.6}
-
+.cancel-sm{width:36px;height:36px;border-radius:8px;background:#f2f2f7;border:none;color:#636366;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ok-btn:active,.cancel-sm:active{opacity:.6}
 .add-row{display:flex;gap:8px;align-items:center}
 .add-em-in{width:46px;height:44px;background:#fff;border:1px solid #e5e5ea;border-radius:10px;font-size:20px;text-align:center;outline:none;font-family:inherit;flex-shrink:0}
 .add-nm-in{flex:1;background:#fff;border:1px solid #e5e5ea;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;color:#1c1c1e;font-family:inherit;outline:none}
@@ -139,31 +153,43 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .add-plus:active{opacity:.8}
 .done-btn{width:100%;margin-top:14px;padding:14px;background:#f2f2f7;color:#1c1c1e;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer}
 .done-btn:active{opacity:.7}
+.mgmt-tabs{display:flex;background:#e5e5ea;border-radius:10px;padding:3px;gap:3px;margin-bottom:16px}
+.mgmt-tab{flex:1;padding:8px;border-radius:8px;font-size:13px;font-weight:700;color:#636366;border:none;background:transparent;font-family:inherit;cursor:pointer}
+.mgmt-tab.on{background:#fff;color:#1c1c1e;box-shadow:0 1px 4px rgba(0,0,0,.1)}
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <span class="hdr-title">Shpenzimet</span>
-  <button class="icon-btn" onclick="openCatModal()">⚙️</button>
+  <span class="hdr-title">💰 Financat</span>
+  <div class="hdr-btns">
+    <button class="icon-btn" onclick="openMgmt('exp')" title="Menaxho kategorite">📂</button>
+    <button class="icon-btn" onclick="openMgmt('inc')" title="Menaxho burimet">💼</button>
+  </div>
 </div>
 
 <div class="hero">
-  <div class="hero-lbl">Totali</div>
+  <div class="hero-lbl">Bilanci neto</div>
   <div class="hero-num" id="heroNum">0<span class="hero-cur">ден</span></div>
-  <div class="hero-period" id="heroPeriod">Të gjitha shpenzimet</div>
-  <div class="hero-pills">
+  <div class="hero-period" id="heroPeriod">Të gjitha</div>
+  <div class="hero-row">
     <div class="pill">
       <div class="pill-dot" style="background:#34c759"></div>
-      <span class="pill-lbl">Kesh</span>
-      <span class="pill-val" id="cashAmt">0</span>
+      <span class="pill-lbl">Të hyra</span>
+      <span class="pill-val" id="incTotal">0</span>
     </div>
     <div class="pill">
-      <div class="pill-dot" style="background:#007aff"></div>
-      <span class="pill-lbl">Kartele</span>
-      <span class="pill-val" id="cardAmt">0</span>
+      <div class="pill-dot" style="background:#ff3b30"></div>
+      <span class="pill-lbl">Shpenzime</span>
+      <span class="pill-val" id="expTotal">0</span>
     </div>
   </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab on" id="tabAll" onclick="setTab('all')">Të gjitha</button>
+  <button class="tab" id="tabInc" onclick="setTab('inc')">💚 Të hyra</button>
+  <button class="tab" id="tabExp" onclick="setTab('exp')">🔴 Shpenzime</button>
 </div>
 
 <div class="date-row">
@@ -174,20 +200,21 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 </div>
 
 <div class="chips" id="chipBar"></div>
-<div class="list-lbl" id="listLbl">0 shpenzime</div>
+<div class="list-lbl" id="listLbl">0 transaksione</div>
 <div id="listEl"></div>
 
 <div class="fab-bar">
-  <button class="fab" onclick="openAdd()">+ Shto shpenzim</button>
+  <button class="fab fab-inc" onclick="openAdd('inc')">+ Të hyra</button>
+  <button class="fab fab-exp" onclick="openAdd('exp')">+ Shpenzim</button>
 </div>
 
-<!-- ADD / EDIT MODAL -->
+<!-- FORM MODAL (add/edit) -->
 <div class="overlay" id="formModal" onclick="overlayClick(event,'formModal')">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-hdr">
-      <button class="sheet-cancel" onclick="closeModal('formModal')">Anulo</button>
-      <span class="sheet-title" id="formTitle">Shpenzim i ri</span>
+      <button class="sheet-cancel" onclick="closeM('formModal')">Anulo</button>
+      <span class="sheet-title" id="formTitle">E re</span>
       <div style="width:52px"></div>
     </div>
     <div class="sheet-body">
@@ -204,7 +231,7 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
           </div>
         </div>
       </div>
-      <div class="fg">
+      <div class="fg" id="payRow">
         <div class="fg-lbl">Mënyra e pagesës</div>
         <div class="seg">
           <button class="seg-b on" id="segKesh" onclick="setPay('kesh')">💵 Kesh</button>
@@ -212,35 +239,39 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
         </div>
       </div>
       <div class="fg">
-        <div class="fg-lbl">Kategoria</div>
+        <div class="fg-lbl" id="catLbl">Kategoria</div>
         <div class="cat-grid" id="fCatGrid"></div>
       </div>
       <div class="fg">
         <div class="fg-lbl">Shënim (opsional)</div>
         <textarea class="ta" id="fNote" placeholder="Shënim..."></textarea>
       </div>
-      <button class="save-btn" onclick="saveForm()">Regjistro</button>
+      <button class="save-btn" id="saveBtn" onclick="saveForm()">Regjistro</button>
     </div>
   </div>
 </div>
 
-<!-- CAT MANAGER MODAL -->
-<div class="overlay" id="catModal" onclick="overlayClick(event,'catModal')">
+<!-- MANAGEMENT MODAL -->
+<div class="overlay" id="mgmtModal" onclick="overlayClick(event,'mgmtModal')">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-hdr">
       <div style="width:52px"></div>
-      <span class="sheet-title">Kategorite</span>
-      <button class="sheet-cancel" onclick="closeCatModal()">U krye</button>
+      <span class="sheet-title">Menaxho</span>
+      <button class="sheet-cancel" onclick="closeMgmt()">U krye</button>
     </div>
     <div class="sheet-body">
+      <div class="mgmt-tabs">
+        <button class="mgmt-tab on" id="mgmtTabExp" onclick="switchMgmt('exp')">📂 Kategoritë</button>
+        <button class="mgmt-tab" id="mgmtTabInc" onclick="switchMgmt('inc')">💼 Burimet</button>
+      </div>
       <div class="cm-list" id="cmList"></div>
       <div class="add-row">
         <input type="text" class="add-em-in" id="newEm" maxlength="2" placeholder="📦">
         <input type="text" class="add-nm-in" id="newNm" placeholder="Emri i ri...">
         <button class="add-plus" onclick="addCat()">+</button>
       </div>
-      <button class="done-btn" onclick="closeCatModal()">U krye ✓</button>
+      <button class="done-btn" onclick="closeMgmt()">U krye ✓</button>
     </div>
   </div>
 </div>
@@ -260,66 +291,105 @@ const DB = {
     ];
     return JSON.parse(localStorage.getItem('shp_cats')||JSON.stringify(d));
   },
-  set cats(v){localStorage.setItem('shp_cats',JSON.stringify(v))}
+  set cats(v){localStorage.setItem('shp_cats',JSON.stringify(v))},
+  get src(){
+    const d=[
+      {id:'rroga',n:'Rroga',e:'💼'},{id:'hotel',n:'Hotel De KOKA',e:'🏨'},
+      {id:'solar',n:'SunEnergy',e:'☀️'},{id:'qira',n:'Qira',e:'🏠'},
+      {id:'bonus',n:'Bonus',e:'🎁'},{id:'tjera_inc',n:'Tjera',e:'💰'}
+    ];
+    return JSON.parse(localStorage.getItem('shp_src')||JSON.stringify(d));
+  },
+  set src(v){localStorage.setItem('shp_src',JSON.stringify(v))}
 };
 
 const fmt = n => Number(n).toLocaleString('mk-MK');
 const today = () => new Date().toISOString().slice(0,10);
 
 // ── STATE ──
-let fCat='all', editId=null, selCat=null, selPay='kesh';
+let activeTab='all', fCat='all', editId=null, formType='exp', selCat=null, selPay='kesh', mgmtType='exp';
+
+// ── TABS ──
+function setTab(t){
+  activeTab=t; fCat='all';
+  ['all','inc','exp'].forEach(x=>document.getElementById('tab'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('on',x===t));
+  renderChips(); render();
+}
 
 // ── CHIPS ──
 function renderChips(){
-  let h=`<button class="chip ${fCat==='all'?'on':''}" onclick="setF('all')">Të gjitha</button>`;
-  DB.cats.forEach(c=>{h+=`<button class="chip ${fCat===c.id?'on':''}" onclick="setF('${c.id}')">${c.e} ${c.n}</button>`;});
+  const items = activeTab==='inc' ? DB.src : activeTab==='exp' ? DB.cats : [];
+  let h='';
+  if(items.length>0){
+    h=`<button class="chip on" id="chipAll" onclick="setF('all')">Të gjitha</button>`;
+    const cls = activeTab==='inc' ? 'on-green' : 'on';
+    items.forEach(c=>{h+=`<button class="chip ${fCat===c.id?cls:''}" onclick="setF('${c.id}')">${c.e} ${c.n}</button>`;});
+  }
   document.getElementById('chipBar').innerHTML=h;
+  if(document.getElementById('chipAll')) document.getElementById('chipAll').className='chip '+(fCat==='all'?(activeTab==='inc'?'on-green':'on'):'');
 }
 function setF(id){fCat=id;renderChips();render();}
 
-// ── RENDER LIST ──
+// ── RENDER ──
 function render(){
   const dF=document.getElementById('dFrom').value;
   const dT=document.getElementById('dTo').value;
-  let list=[...DB.ex].reverse();
+  let list=[...DB.ex].sort((a,b)=>b.d.localeCompare(a.d)||b.ts-a.ts);
+
+  const allInc=list.filter(e=>e.t==='inc');
+  const allExp=list.filter(e=>e.t==='exp');
+  const totInc=allInc.reduce((s,e)=>s+Number(e.a),0);
+  const totExp=allExp.reduce((s,e)=>s+Number(e.a),0);
+  const net=totInc-totExp;
+  const heroEl=document.getElementById('heroNum');
+  heroEl.innerHTML=fmt(Math.abs(net))+'<span class="hero-cur">ден</span>';
+  heroEl.className='hero-num'+(net<0?' negative':'');
+  document.getElementById('incTotal').textContent=fmt(totInc);
+  document.getElementById('expTotal').textContent=fmt(totExp);
+
+  if(activeTab==='inc') list=list.filter(e=>e.t==='inc');
+  else if(activeTab==='exp') list=list.filter(e=>e.t==='exp');
   if(fCat!=='all') list=list.filter(e=>e.cid===fCat);
   if(dF) list=list.filter(e=>e.d>=dF);
   if(dT) list=list.filter(e=>e.d<=dT);
 
-  const tot=list.reduce((s,e)=>s+Number(e.a),0);
-  const cash=list.filter(e=>e.p==='kesh').reduce((s,e)=>s+Number(e.a),0);
-  const card=list.filter(e=>e.p==='kartele').reduce((s,e)=>s+Number(e.a),0);
-
-  document.getElementById('heroNum').innerHTML=fmt(tot)+'<span class="hero-cur">ден</span>';
-  document.getElementById('cashAmt').textContent=fmt(cash);
-  document.getElementById('cardAmt').textContent=fmt(card);
-  document.getElementById('listLbl').textContent=list.length+' shpenzime';
-
-  let per='Të gjitha shpenzimet';
+  let per='Të gjitha';
   if(dF&&dT) per=dF+' — '+dT;
   else if(dF) per='Nga '+dF;
   else if(dT) per='Deri '+dT;
-  else if(fCat!=='all'){const c=DB.cats.find(x=>x.id===fCat);if(c)per=c.e+' '+c.n;}
+  else if(fCat!=='all'){
+    const src=activeTab==='inc'?DB.src:DB.cats;
+    const c=src.find(x=>x.id===fCat);
+    if(c) per=c.e+' '+c.n;
+  }
   document.getElementById('heroPeriod').textContent=per;
+  document.getElementById('listLbl').textContent=list.length+' transaksione';
 
   const el=document.getElementById('listEl');
   if(!list.length){
-    el.innerHTML='<div class="empty"><div class="empty-ico">💸</div><div class="empty-t">Nuk ka shpenzime</div><div class="empty-s">Shtypni "+ Shto shpenzim"</div></div>';
+    el.innerHTML='<div class="empty"><div class="empty-ico">'+(activeTab==='inc'?'💚':'💸')+'</div><div class="empty-t">Nuk ka të dhëna</div><div class="empty-s">Shtypni butonin + më poshtë</div></div>';
     return;
   }
+
   const rows=list.map(e=>{
-    const cat=DB.cats.find(c=>c.id===e.cid)||{n:e.cid,e:'📦'};
-    const dc=e.p==='kesh'?'#34c759':'#007aff';
+    const isInc=e.t==='inc';
+    const cats=isInc?DB.src:DB.cats;
+    const cat=cats.find(c=>c.id===e.cid)||{n:e.cid,e:'📦'};
+    const dc=isInc?'#34c759':'#ff3b30';
     const pl=e.p==='kesh'?'Kesh':'Kartele';
+    const sign=isInc?'+':'−';
     return '<div class="erow">'+
       '<div class="erow-ico">'+cat.e+'</div>'+
       '<div class="erow-info">'+
         '<div class="erow-name">'+cat.n+'</div>'+
-        '<div class="erow-sub"><span class="erow-dot" style="background:'+dc+'"></span><span>'+pl+'</span><span>·</span><span>'+e.d+'</span></div>'+
+        '<div class="erow-sub">'+
+          (isInc?'':'<span class="erow-dot" style="background:'+dc+'"></span><span>'+pl+'</span><span>·</span>')+
+          '<span>'+e.d+'</span>'+
+        '</div>'+
         (e.nt?'<div class="erow-note">'+e.nt+'</div>':'')+
       '</div>'+
       '<div class="erow-right">'+
-        '<div class="erow-amt">'+fmt(e.a)+'<span class="cur">ден</span></div>'+
+        '<div class="erow-amt '+(isInc?'inc':'exp')+'">'+sign+fmt(e.a)+'<span class="cur">ден</span></div>'+
         '<div class="erow-btns">'+
           '<button class="btn-edit" onclick="openEdit(\''+e.id+'\')">✎</button>'+
           '<button class="btn-del" onclick="delEx(\''+e.id+'\')">✕</button>'+
@@ -336,29 +406,35 @@ function clearDates(){
   render();
 }
 
-// ── FORM (ADD / EDIT) ──
+// ── FORM ──
 function setPay(p){
   selPay=p;
   document.getElementById('segKesh').classList.toggle('on',p==='kesh');
   document.getElementById('segCard').classList.toggle('on',p==='kartele');
 }
 
-function renderCatGrid(gridId){
-  document.getElementById(gridId).innerHTML=DB.cats.map(c=>
-    '<div class="cat-t '+(selCat===c.id?'sel':'')+'" onclick="selCatFn(\''+c.id+'\',\''+gridId+'\')">'+
+function renderCatGrid(){
+  const cats=formType==='inc'?DB.src:DB.cats;
+  const selClass=formType==='inc'?'sel-green':'sel';
+  document.getElementById('fCatGrid').innerHTML=cats.map(c=>
+    '<div class="cat-t '+(selCat===c.id?selClass:'')+'" onclick="selCatFn(\''+c.id+'\')">'+
     '<span class="e">'+c.e+'</span><span class="n">'+c.n+'</span></div>'
   ).join('');
 }
-function selCatFn(id,gridId){selCat=id;renderCatGrid(gridId);}
+function selCatFn(id){selCat=id;renderCatGrid();}
 
-function openAdd(){
-  editId=null; selCat=null; selPay='kesh';
-  document.getElementById('formTitle').textContent='Shpenzim i ri';
+function openAdd(type){
+  editId=null; selCat=null; selPay='kesh'; formType=type;
+  document.getElementById('formTitle').textContent=type==='inc'?'Të hyra të reja':'Shpenzim i ri';
   document.getElementById('fAmt').value='';
   document.getElementById('fDate').value=today();
   document.getElementById('fNote').value='';
+  document.getElementById('payRow').style.display=type==='inc'?'none':'block';
+  document.getElementById('catLbl').textContent=type==='inc'?'Burimi':'Kategoria';
+  document.getElementById('saveBtn').className='save-btn '+(type==='inc'?'save-inc':'save-exp');
+  document.getElementById('saveBtn').textContent=type==='inc'?'Regjistro të hyrat':'Regjistro shpenzimin';
   setPay('kesh');
-  renderCatGrid('fCatGrid');
+  renderCatGrid();
   document.getElementById('formModal').classList.add('on');
   setTimeout(()=>document.getElementById('fAmt').focus(),300);
 }
@@ -366,13 +442,17 @@ function openAdd(){
 function openEdit(id){
   const e=DB.ex.find(x=>x.id===id);
   if(!e) return;
-  editId=id; selCat=e.cid; selPay=e.p;
-  document.getElementById('formTitle').textContent='Edito shpenzimin';
+  editId=id; selCat=e.cid; selPay=e.p||'kesh'; formType=e.t;
+  document.getElementById('formTitle').textContent=e.t==='inc'?'Edito të hyrat':'Edito shpenzimin';
   document.getElementById('fAmt').value=e.a;
   document.getElementById('fDate').value=e.d;
   document.getElementById('fNote').value=e.nt||'';
-  setPay(e.p);
-  renderCatGrid('fCatGrid');
+  document.getElementById('payRow').style.display=e.t==='inc'?'none':'block';
+  document.getElementById('catLbl').textContent=e.t==='inc'?'Burimi':'Kategoria';
+  document.getElementById('saveBtn').className='save-btn '+(e.t==='inc'?'save-inc':'save-exp');
+  document.getElementById('saveBtn').textContent='Ruaj ndryshimet';
+  setPay(e.p||'kesh');
+  renderCatGrid();
   document.getElementById('formModal').classList.add('on');
 }
 
@@ -381,51 +461,54 @@ function saveForm(){
   const d=document.getElementById('fDate').value;
   const nt=document.getElementById('fNote').value.trim();
   const inp=document.getElementById('fAmt');
-  if(!a||a<=0){
-    inp.style.color='#ff3b30';
-    setTimeout(()=>inp.style.color='',1200);
-    return;
-  }
+  if(!a||a<=0){inp.style.color='#ff3b30';setTimeout(()=>inp.style.color='',1200);return;}
   if(!selCat){
     const g=document.getElementById('fCatGrid');
-    g.style.outline='2px solid #ff3b30';
-    g.style.borderRadius='12px';
-    setTimeout(()=>{g.style.outline='';},1200);
-    return;
+    g.style.outline='2px solid #ff3b30';g.style.borderRadius='12px';
+    setTimeout(()=>{g.style.outline='';},1200);return;
   }
   const ex=DB.ex;
   if(editId){
     const i=ex.findIndex(x=>x.id===editId);
-    if(i>-1){ex[i].a=a;ex[i].d=d;ex[i].cid=selCat;ex[i].p=selPay;ex[i].nt=nt;}
+    if(i>-1){ex[i].a=a;ex[i].d=d;ex[i].cid=selCat;ex[i].p=selPay;ex[i].nt=nt;ex[i].t=formType;}
   } else {
-    ex.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2),a,d,cid:selCat,p:selPay,nt,ts:Date.now()});
+    ex.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2),a,d,cid:selCat,p:selPay,nt,t:formType,ts:Date.now()});
   }
   DB.ex=ex;
-  closeModal('formModal');
-  renderChips();
-  render();
+  closeM('formModal');
+  renderChips(); render();
 }
 
 function delEx(id){
-  if(!confirm('Fshi këtë shpenzim?')) return;
+  if(!confirm('Fshi këtë transaksion?')) return;
   DB.ex=DB.ex.filter(e=>e.id!==id);
   render();
 }
 
-// ── CATEGORY MANAGER ──
-function openCatModal(){
+// ── MANAGEMENT ──
+function openMgmt(type){
+  mgmtType=type;
+  document.getElementById('mgmtTabExp').classList.toggle('on',type==='exp');
+  document.getElementById('mgmtTabInc').classList.toggle('on',type==='inc');
   renderCM();
-  document.getElementById('catModal').classList.add('on');
+  document.getElementById('mgmtModal').classList.add('on');
 }
 
-function closeCatModal(){
-  closeModal('catModal');
-  renderChips();
-  render();
+function switchMgmt(type){
+  mgmtType=type;
+  document.getElementById('mgmtTabExp').classList.toggle('on',type==='exp');
+  document.getElementById('mgmtTabInc').classList.toggle('on',type==='inc');
+  renderCM();
+}
+
+function closeMgmt(){
+  closeM('mgmtModal');
+  renderChips(); render();
 }
 
 function renderCM(){
-  document.getElementById('cmList').innerHTML=DB.cats.map(c=>
+  const items=mgmtType==='inc'?DB.src:DB.cats;
+  document.getElementById('cmList').innerHTML=items.map(c=>
     '<div class="cm-row" id="cmr-'+c.id+'">'+
       '<span class="cm-em">'+c.e+'</span>'+
       '<span class="cm-nm">'+c.n+'</span>'+
@@ -436,14 +519,15 @@ function renderCM(){
 }
 
 function startEditCat(id){
-  const cat=DB.cats.find(c=>c.id===id);
+  const items=mgmtType==='inc'?DB.src:DB.cats;
+  const cat=items.find(c=>c.id===id);
   if(!cat) return;
   document.getElementById('cmr-'+id).outerHTML=
     '<div class="cm-edit-row" id="cmr-'+id+'">'+
       '<input class="em-in" id="ece-'+id+'" value="'+cat.e+'" maxlength="2">'+
       '<input class="nm-in" id="ecn-'+id+'" value="'+cat.n+'">'+
       '<button class="ok-btn" onclick="saveEditCat(\''+id+'\')">✓</button>'+
-      '<button class="cancel-btn-sm" onclick="renderCM()">✕</button>'+
+      '<button class="cancel-sm" onclick="renderCM()">✕</button>'+
     '</div>';
   document.getElementById('ecn-'+id).focus();
 }
@@ -452,16 +536,18 @@ function saveEditCat(id){
   const em=document.getElementById('ece-'+id).value.trim()||'📦';
   const nm=document.getElementById('ecn-'+id).value.trim();
   if(!nm) return;
-  const cats=DB.cats;
-  const i=cats.findIndex(c=>c.id===id);
-  if(i>-1){cats[i].e=em;cats[i].n=nm;}
-  DB.cats=cats;
+  const key=mgmtType==='inc'?'src':'cats';
+  const items=[...DB[key]];
+  const i=items.findIndex(c=>c.id===id);
+  if(i>-1){items[i].e=em;items[i].n=nm;}
+  DB[key]=items;
   renderCM();
 }
 
 function delCat(id){
-  if(DB.ex.some(e=>e.cid===id)&&!confirm('Kategoria ka shpenzime. Fshi gjithsesi?')) return;
-  DB.cats=DB.cats.filter(c=>c.id!==id);
+  const key=mgmtType==='inc'?'src':'cats';
+  if(DB.ex.some(e=>e.cid===id)&&!confirm('Ka transaksione. Fshi gjithsesi?')) return;
+  DB[key]=DB[key].filter(c=>c.id!==id);
   renderCM();
 }
 
@@ -469,17 +555,17 @@ function addCat(){
   const e=document.getElementById('newEm').value.trim()||'📦';
   const n=document.getElementById('newNm').value.trim();
   if(!n) return;
-  const cats=DB.cats;
-  cats.push({id:'cat_'+Date.now().toString(36),n,e});
-  DB.cats=cats;
+  const key=mgmtType==='inc'?'src':'cats';
+  const items=[...DB[key]];
+  items.push({id:'c_'+Date.now().toString(36),n,e});
+  DB[key]=items;
   document.getElementById('newEm').value='';
   document.getElementById('newNm').value='';
   renderCM();
 }
 
-// ── MODAL HELPERS ──
-function closeModal(id){document.getElementById(id).classList.remove('on');}
-function overlayClick(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+function closeM(id){document.getElementById(id).classList.remove('on');}
+function overlayClick(e,id){if(e.target===document.getElementById(id))closeM(id);}
 
 // ── INIT ──
 renderChips();
