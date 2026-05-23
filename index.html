@@ -581,6 +581,43 @@ function addCat(){
 function closeM(id){document.getElementById(id).classList.remove('on');}
 function overlayClick(e,id){if(e.target===document.getElementById(id))closeM(id);}
 
+// ── MIGRIMI nga versioni i vjetër ──
+(function migrate(){
+  if(!localStorage.getItem('shp_ex')){
+    const old = localStorage.getItem('sh_expenses');
+    if(old){
+      try{
+        const arr = JSON.parse(old);
+        const conv = arr.map(e=>({
+          id: e.id || Date.now().toString(36)+Math.random().toString(36).slice(2),
+          a: e.amount||e.a||0,
+          d: e.date||e.d||'',
+          cid: e.catId||e.cid||'tjera',
+          p: e.pay||e.p||'kesh',
+          nt: e.note||e.nt||'',
+          t: 'exp',
+          ts: e.ts||Date.now()
+        }));
+        localStorage.setItem('shp_ex', JSON.stringify(conv));
+      }catch(e){}
+    }
+  }
+  if(!localStorage.getItem('shp_cats')){
+    const old = localStorage.getItem('sh_categories');
+    if(old){
+      try{
+        const arr = JSON.parse(old);
+        const conv = arr.map(c=>({
+          id: c.id,
+          n: c.name||c.n||'',
+          e: c.em||c.e||'📦'
+        }));
+        localStorage.setItem('shp_cats', JSON.stringify(conv));
+      }catch(e){}
+    }
+  }
+})();
+
 // ── FIX entries pa tip ──
 (function fixTypes(){
   const ex=DB.ex;
