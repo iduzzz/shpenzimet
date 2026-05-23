@@ -142,6 +142,13 @@ body {
   display: flex; align-items: center; justify-content: center;
 }
 .row-del:active { opacity: 0.6; }
+.row-edit {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #eff6ff; border: none; color: #3b82f6;
+  font-size: 11px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.row-edit:active { opacity: 0.6; }
 
 .empty {
   background: #ffffff; border-radius: 16px; border: 1px solid #e8e8ec;
@@ -285,6 +292,13 @@ body {
   display: flex; align-items: center; justify-content: center;
 }
 .cm-del:active { opacity: 0.7; }
+.cm-edit-btn {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #eff6ff; border: none; color: #3b82f6;
+  font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.cm-edit-btn:active { opacity: 0.7; }
 
 .add-row { display: flex; gap: 8px; align-items: center; }
 .em-in {
@@ -404,6 +418,49 @@ body {
   </div>
 </div>
 
+<!-- EDIT EXPENSE MODAL -->
+<div class="overlay" id="editModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <button class="sheet-cancel" id="cancelEdit">Anulo</button>
+      <span class="sheet-title">Edito shpenzimin</span>
+      <div style="width:48px"></div>
+    </div>
+    <div class="sheet-body">
+      <div class="fg">
+        <div class="ios-card">
+          <div class="ios-r">
+            <span class="ios-rl">Shuma</span>
+            <input type="number" class="ios-fi big" id="edAmt" placeholder="0" inputmode="decimal" min="0">
+            <span class="ios-unit">ден</span>
+          </div>
+          <div class="ios-r">
+            <span class="ios-rl">Data</span>
+            <input type="date" class="ios-fi" id="edDate">
+          </div>
+        </div>
+      </div>
+      <div class="fg">
+        <div class="fg-lbl">Mënyra e pagesës</div>
+        <div class="seg">
+          <button class="seg-b on" id="edKesh" onclick="setEditPay('kesh')">💵 Kesh</button>
+          <button class="seg-b" id="edCard" onclick="setEditPay('kartele')">💳 Kartele</button>
+        </div>
+      </div>
+      <div class="fg">
+        <div class="fg-lbl">Kategoria</div>
+        <div class="cat-grid" id="edCatGrid"></div>
+      </div>
+      <div class="fg">
+        <div class="fg-lbl">Shënim</div>
+        <textarea class="ta" id="edNote" placeholder="Opsional..."></textarea>
+      </div>
+      <button class="save-btn" id="editSaveBtn">Ruaj ndryshimet</button>
+    </div>
+  </div>
+</div>
+
 <!-- CAT MODAL -->
 <div class="overlay" id="catModal">
   <div class="sheet">
@@ -501,7 +558,10 @@ function render(){
       </div>
       <div class="row-right">
         <div class="row-amt">${fmt(e.a)}<span class="cur">ден</span></div>
-        <button class="row-del" onclick="delE('${e.id}')">✕</button>
+        <div style="display:flex;gap:5px">
+          <button class="row-edit" onclick="openEdit('${e.id}')">✎</button>
+          <button class="row-del" onclick="delE('${e.id}')">✕</button>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -560,8 +620,37 @@ document.getElementById('doneBtnB').onclick=()=>{closeM('catModal');renderChips(
 
 function renderCM(){
   document.getElementById('cmList').innerHTML=DB.cats.map(c=>
-    `<div class="cm-row"><span class="cm-em">${c.e}</span><span class="cm-nm">${c.n}</span><button class="cm-del" onclick="delCat('${c.id}')">−</button></div>`
+    `<div class="cm-row" id="cmr-${c.id}">
+      <span class="cm-em">${c.e}</span>
+      <span class="cm-nm" id="cmn-${c.id}">${c.n}</span>
+      <button class="cm-edit-btn" onclick="startEditCat('${c.id}')">✎</button>
+      <button class="cm-del" onclick="delCat('${c.id}')">−</button>
+    </div>`
   ).join('');
+}
+
+function startEditCat(id){
+  const cat=DB.cats.find(c=>c.id===id);
+  if(!cat)return;
+  const row=document.getElementById('cmr-'+id);
+  row.innerHTML=`
+    <input type="text" class="em-in" id="ece-${id}" value="${cat.e}" maxlength="2" style="width:42px;height:38px">
+    <input type="text" class="nm-in" id="ecn-${id}" value="${cat.n}" style="flex:1;padding:8px 10px;font-size:14px">
+    <button class="add-btn-sm" style="width:38px;height:38px;font-size:18px" onclick="saveEditCat('${id}')">✓</button>
+    <button class="cm-del" onclick="renderCM()">✕</button>
+  `;
+  document.getElementById('ecn-'+id).focus();
+}
+
+function saveEditCat(id){
+  const em=document.getElementById('ece-'+id).value.trim()||'📦';
+  const nm=document.getElementById('ecn-'+id).value.trim();
+  if(!nm)return;
+  const cats=DB.cats;
+  const i=cats.findIndex(c=>c.id===id);
+  if(i>-1){cats[i].e=em;cats[i].n=nm;}
+  DB.cats=cats;
+  renderCM();
 }
 
 function delCat(id){
@@ -581,7 +670,54 @@ document.getElementById('addCatBtn').onclick=function(){
   renderCM();
 };
 
-document.getElementById('dFrom').onchange=function(){dF=this.value;render();};
+let editId=null, editPay='kesh', editCat=null;
+
+function setEditPay(p){
+  editPay=p;
+  document.getElementById('edKesh').classList.toggle('on',p==='kesh');
+  document.getElementById('edCard').classList.toggle('on',p==='kartele');
+}
+
+function openEdit(id){
+  const e=DB.ex.find(x=>x.id===id);
+  if(!e)return;
+  editId=id; editPay=e.p; editCat=e.cid;
+  document.getElementById('edAmt').value=e.a;
+  document.getElementById('edDate').value=e.d;
+  document.getElementById('edNote').value=e.nt||'';
+  setEditPay(e.p);
+  renderEditCatGrid();
+  document.getElementById('editModal').classList.add('on');
+}
+
+function renderEditCatGrid(){
+  document.getElementById('edCatGrid').innerHTML=DB.cats.map(c=>
+    `<div class="cat-t ${editCat===c.id?'sel':''}" onclick="setEditCat('${c.id}')"><span class="e">${c.e}</span><span class="n">${c.n}</span></div>`
+  ).join('');
+}
+
+function setEditCat(id){editCat=id;renderEditCatGrid();}
+
+document.getElementById('cancelEdit').onclick=()=>closeM('editModal');
+document.getElementById('editModal').addEventListener('click',function(e){if(e.target===this)closeM('editModal');});
+
+document.getElementById('editSaveBtn').onclick=function(){
+  const a=parseFloat(document.getElementById('edAmt').value);
+  const d=document.getElementById('edDate').value;
+  const nt=document.getElementById('edNote').value.trim();
+  const inp=document.getElementById('edAmt');
+  if(!a||a<=0){inp.style.color='#ff4444';setTimeout(()=>inp.style.color='',1200);return;}
+  if(!editCat){
+    const g=document.getElementById('edCatGrid');
+    g.style.outline='2px solid #ff4444';g.style.borderRadius='12px';
+    setTimeout(()=>{g.style.outline='';},1200);return;
+  }
+  const ex=DB.ex;
+  const i=ex.findIndex(x=>x.id===editId);
+  if(i>-1){ex[i].a=a;ex[i].d=d;ex[i].cid=editCat;ex[i].p=editPay;ex[i].nt=nt;}
+  DB.ex=ex;
+  closeM('editModal');render();renderChips();
+};=function(){dF=this.value;render();};
 document.getElementById('dTo').onchange=function(){dT=this.value;render();};
 document.getElementById('dClr').onclick=function(){
   dF='';dT='';
