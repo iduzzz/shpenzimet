@@ -168,6 +168,19 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .add-plus:active{opacity:.8}
 .done-btn{width:100%;margin-top:14px;padding:14px;background:#f2f2f7;color:#1c1c1e;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer}
 .done-btn:active{opacity:.7}
+
+/* CARD SELECTOR */
+.card-sel-wrap{display:flex;flex-direction:column;gap:8px}
+.card-opt{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #e5e5ea;border-radius:12px;padding:12px 14px;cursor:pointer;transition:all .15s}
+.card-opt.sel{border-color:#007aff;background:#e8f4ff}
+.card-opt:active{opacity:.7}
+.card-opt-ico{font-size:22px;flex-shrink:0}
+.card-opt-info{flex:1}
+.card-opt-name{font-size:15px;font-weight:700;color:#1c1c1e}
+.card-opt-limit{font-size:12px;color:#8e8e93;font-weight:600;margin-top:1px}
+.card-opt-check{width:22px;height:22px;border-radius:50%;border:2px solid #e5e5ea;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+.card-opt.sel .card-opt-check{background:#007aff;border-color:#007aff;color:#fff}
+
 /* ── VISA WIDGET ── */
 .visa-wrap{margin:12px 16px 0;background:linear-gradient(135deg,#1c2b4a 0%,#1a3a6b 100%);border-radius:16px;padding:16px 18px;position:relative;overflow:hidden;color:#fff}
 .visa-wrap::before{content:'VISA';position:absolute;right:18px;top:16px;font-size:18px;font-weight:900;font-style:italic;color:rgba(255,255,255,0.5);letter-spacing:1px}
@@ -330,6 +343,10 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
           <button class="seg-b" id="segCard" onclick="setPay('kartele')">💳 Kartele</button>
         </div>
       </div>
+      <div class="fg" id="cardSelWrap" style="display:none">
+        <div class="fg-lbl">Cila kartë?</div>
+        <div class="card-sel-wrap" id="cardSelGrid"></div>
+      </div>
       <div class="fg">
         <div class="fg-lbl" id="catLbl">Kategoria</div>
         <div class="cat-grid" id="fCatGrid"></div>
@@ -356,6 +373,7 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
       <div class="mgmt-tabs">
         <button class="mgmt-tab on" id="mgmtTabExp" onclick="switchMgmt('exp')">📂 Kategoritë</button>
         <button class="mgmt-tab" id="mgmtTabInc" onclick="switchMgmt('inc')">💼 Burimet</button>
+        <button class="mgmt-tab" id="mgmtTabCards" onclick="switchMgmt('cards')">💳 Kartelat</button>
       </div>
       <div class="cm-list" id="cmList"></div>
       <div class="add-row">
@@ -373,6 +391,14 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 const DB = {
   get ex(){return JSON.parse(localStorage.getItem('shp_ex')||'[]')},
   set ex(v){localStorage.setItem('shp_ex',JSON.stringify(v))},
+  get cards(){
+    const d=[
+      {id:'visa',n:'VISA Credit Card',e:'💳',limit:89669},
+      {id:'debit',n:'Debit Card',e:'🏦',limit:0}
+    ];
+    return JSON.parse(localStorage.getItem('shp_cards')||JSON.stringify(d));
+  },
+  set cards(v){localStorage.setItem('shp_cards',JSON.stringify(v))},
   get cats(){
     const d=[
       {id:'ushqim',n:'Ushqim',e:'🛒'},{id:'restoran',n:'Restorant',e:'🍽️'},
@@ -399,7 +425,7 @@ const fmt = n => Number(n).toLocaleString('mk-MK');
 const today = () => new Date().toISOString().slice(0,10);
 
 // ── STATE ──
-let activeTab='all', fCat='all', editId=null, formType='exp', selCat=null, selPay='kesh', mgmtType='exp';
+let activeTab='all', fCat='all', editId=null, formType='exp', selCat=null, selPay='kesh', selCard=null, mgmtType='exp';
 
 // ── TABS ──
 function setTab(t){
@@ -500,9 +526,25 @@ function clearDates(){
 // ── FORM ──
 function setPay(p){
   selPay=p;
+  selCard=null;
   document.getElementById('segKesh').classList.toggle('on',p==='kesh');
   document.getElementById('segCard').classList.toggle('on',p==='kartele');
+  const show = p==='kartele';
+  document.getElementById('cardSelWrap').style.display = show?'block':'none';
+  if(show) renderCardSel();
 }
+
+function renderCardSel(){
+  document.getElementById('cardSelGrid').innerHTML = DB.cards.map(c=>{
+    const sel=selCard===c.id;
+    const lim=c.limit>0?('<div class="card-opt-limit">Limit: '+fmt(c.limit)+' ден</div>'):'';
+    return '<div class="card-opt '+(sel?'sel':'')+' " data-cid="'+c.id+'" onclick="setCard(this.dataset.cid)">'+
+      '<span class="card-opt-ico">'+c.e+'</span>'+
+      '<div class="card-opt-info"><div class="card-opt-name">'+c.n+'</div>'+lim+'</div>'+
+      '<div class="card-opt-check">'+(sel?'✓':'')+'</div></div>';
+  }).join('');
+}
+function setCard(id){ selCard=id; renderCardSel(); }
 
 function renderCatGrid(){
   const cats=formType==='inc'?DB.src:DB.cats;
@@ -515,7 +557,7 @@ function renderCatGrid(){
 function selCatFn(id){selCat=id;renderCatGrid();}
 
 function openAdd(type){
-  editId=null; selCat=null; selPay='kesh'; formType=type;
+  editId=null; selCat=null; selPay='kesh'; selCard=null; formType=type;
   document.getElementById('formTitle').textContent=type==='inc'?'Të hyra të reja':'Shpenzim i ri';
   document.getElementById('fAmt').value='';
   document.getElementById('fDate').value=today();
@@ -533,7 +575,7 @@ function openAdd(type){
 function openEdit(id){
   const e=DB.ex.find(x=>x.id===id);
   if(!e) return;
-  editId=id; selCat=e.cid; selPay=e.p||'kesh'; formType=e.t;
+  editId=id; selCat=e.cid; selPay=e.p||'kesh'; selCard=e.card||null; formType=e.t;
   document.getElementById('formTitle').textContent=e.t==='inc'?'Edito të hyrat':'Edito shpenzimin';
   document.getElementById('fAmt').value=e.a;
   document.getElementById('fDate').value=e.d;
@@ -543,6 +585,10 @@ function openEdit(id){
   document.getElementById('saveBtn').className='save-btn '+(e.t==='inc'?'save-inc':'save-exp');
   document.getElementById('saveBtn').textContent='Ruaj ndryshimet';
   setPay(e.p||'kesh');
+  if(e.p==='kartele' && e.card){
+    selCard=e.card;
+    renderCardSel();
+  }
   renderCatGrid();
   document.getElementById('formModal').classList.add('on');
 }
@@ -553,6 +599,11 @@ function saveForm(){
   const nt=document.getElementById('fNote').value.trim();
   const inp=document.getElementById('fAmt');
   if(!a||a<=0){inp.style.color='#ff3b30';setTimeout(()=>inp.style.color='',1200);return;}
+  if(selPay==='kartele' && !selCard){
+    const g=document.getElementById('cardSelGrid');
+    g.style.outline='2px solid #ff3b30';g.style.borderRadius='12px';
+    setTimeout(()=>{g.style.outline='';},1200);return;
+  }
   if(!selCat){
     const g=document.getElementById('fCatGrid');
     g.style.outline='2px solid #ff3b30';g.style.borderRadius='12px';
@@ -561,9 +612,9 @@ function saveForm(){
   const ex=DB.ex;
   if(editId){
     const i=ex.findIndex(x=>x.id===editId);
-    if(i>-1){ex[i].a=a;ex[i].d=d;ex[i].cid=selCat;ex[i].p=selPay;ex[i].nt=nt;ex[i].t=formType;}
+    if(i>-1){ex[i].a=a;ex[i].d=d;ex[i].cid=selCat;ex[i].p=selPay;ex[i].card=selCard;ex[i].nt=nt;ex[i].t=formType;}
   } else {
-    ex.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2),a,d,cid:selCat,p:selPay,nt,t:formType,ts:Date.now()});
+    ex.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2),a,d,cid:selCat,p:selPay,card:selCard,nt,t:formType,ts:Date.now()});
   }
   DB.ex=ex;
   closeM('formModal');
@@ -587,6 +638,7 @@ function switchMgmt(type){
   mgmtType=type;
   document.getElementById('mgmtTabExp').classList.toggle('on',type==='exp');
   document.getElementById('mgmtTabInc').classList.toggle('on',type==='inc');
+  document.getElementById('mgmtTabCards').classList.toggle('on',type==='cards');
   renderCM();
 }
 
@@ -596,7 +648,7 @@ function closeMgmt(){
 }
 
 function renderCM(){
-  const items=mgmtType==='inc'?DB.src:DB.cats;
+  const items=mgmtType==='cards'?DB.cards:mgmtType==='inc'?DB.src:DB.cats;
   document.getElementById('cmList').innerHTML=items.map(c=>
     '<div class="cm-row" id="cmr-'+c.id+'">'+
       '<span class="cm-em">'+c.e+'</span>'+
@@ -625,7 +677,7 @@ function saveEditCat(id){
   const em=document.getElementById('ece-'+id).value.trim()||'📦';
   const nm=document.getElementById('ecn-'+id).value.trim();
   if(!nm) return;
-  const key=mgmtType==='inc'?'src':'cats';
+  const key=mgmtType==='cards'?'cards':mgmtType==='inc'?'src':'cats';
   const items=[...DB[key]];
   const i=items.findIndex(c=>c.id===id);
   if(i>-1){items[i].e=em;items[i].n=nm;}
@@ -634,7 +686,7 @@ function saveEditCat(id){
 }
 
 function delCat(id){
-  const key=mgmtType==='inc'?'src':'cats';
+  const key=mgmtType==='cards'?'cards':mgmtType==='inc'?'src':'cats';
   if(DB.ex.some(e=>e.cid===id)&&!confirm('Ka transaksione. Fshi gjithsesi?')) return;
   DB[key]=DB[key].filter(c=>c.id!==id);
   renderCM();
@@ -644,7 +696,7 @@ function addCat(){
   const e=document.getElementById('newEm').value.trim()||'📦';
   const n=document.getElementById('newNm').value.trim();
   if(!n) return;
-  const key=mgmtType==='inc'?'src':'cats';
+  const key=mgmtType==='cards'?'cards':mgmtType==='inc'?'src':'cats';
   const items=[...DB[key]];
   items.push({id:'c_'+Date.now().toString(36),n,e});
   DB[key]=items;
@@ -659,7 +711,7 @@ function overlayClick(e,id){if(e.target===document.getElementById(id))closeM(id)
 
 // ── VISA ──
 const VCFG = {
-  get(){ return JSON.parse(localStorage.getItem('visa2_cfg')||'{"limit":89669,"kest":0}'); },
+  get(){ return JSON.parse(localStorage.getItem('visa2_cfg')||'{"limit":89669,"kest":0,"cardId":"visa"}'); },
   set(v){ localStorage.setItem('visa2_cfg',JSON.stringify(v)); }
 };
 
@@ -668,7 +720,7 @@ function renderVisa(){
   const limit = cfg.limit || 89669;
   const kest = cfg.kest || 0;
   // shpenzuar me kartele (te gjitha, jo vetem muajin)
-  const cardSpent = DB.ex.filter(e=>(e.t==='exp'||!e.t) && e.p==='kartele')
+  const cardSpent = DB.ex.filter(e=>(e.t==='exp'||!e.t) && e.p==='kartele' && e.card===cfg.cardId)
     .reduce((s,e)=>s+Number(e.a),0);
   const avail = limit - cardSpent;
   const afterKest = avail - kest;
@@ -693,7 +745,8 @@ function openVisaCfg(){
 function saveVisaCfg(){
   VCFG.set({
     limit: parseFloat(document.getElementById('vcLimit').value)||89669,
-    kest: parseFloat(document.getElementById('vcKest').value)||0
+    kest: parseFloat(document.getElementById('vcKest').value)||0,
+    cardId: 'visa'
   });
   closeM('visaCfgModal');
   renderVisa();
