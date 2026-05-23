@@ -168,6 +168,27 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .add-plus:active{opacity:.8}
 .done-btn{width:100%;margin-top:14px;padding:14px;background:#f2f2f7;color:#1c1c1e;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer}
 .done-btn:active{opacity:.7}
+/* ── VISA WIDGET ── */
+.visa-wrap{margin:12px 16px 0;background:linear-gradient(135deg,#1c2b4a 0%,#1a3a6b 100%);border-radius:16px;padding:16px 18px;position:relative;overflow:hidden;color:#fff}
+.visa-wrap::before{content:'VISA';position:absolute;right:18px;top:16px;font-size:18px;font-weight:900;font-style:italic;color:rgba(255,255,255,0.5);letter-spacing:1px}
+.visa-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.visa-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.8px}
+.visa-cfg-btn{background:rgba(255,255,255,0.12);border:none;color:rgba(255,255,255,0.7);font-size:12px;border-radius:8px;padding:5px 10px;cursor:pointer;font-family:inherit;font-weight:600}
+.visa-cfg-btn:active{opacity:.6}
+.visa-numbers{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
+.visa-used-block{}
+.visa-used-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.visa-used-val{font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1}
+.visa-used-cur{font-size:13px;font-weight:500;color:rgba(255,255,255,0.45);margin-left:2px}
+.visa-avail-block{text-align:right}
+.visa-avail-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.visa-avail-val{font-size:18px;font-weight:800}
+.visa-bar-bg{background:rgba(255,255,255,0.15);border-radius:4px;height:4px;margin-bottom:12px;overflow:hidden}
+.visa-bar-fg{height:100%;border-radius:4px;background:linear-gradient(90deg,#4ade80 0%,#facc15 60%,#f87171 100%);transition:width .4s}
+.visa-stats{display:flex;gap:8px}
+.visa-stat{flex:1;background:rgba(255,255,255,0.1);border-radius:10px;padding:8px 10px}
+.visa-stat-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.visa-stat-val{font-size:13px;font-weight:800;color:#fff}
 .mgmt-tabs{display:flex;background:#e5e5ea;border-radius:10px;padding:3px;gap:3px;margin-bottom:16px}
 .mgmt-tab{flex:1;padding:8px;border-radius:8px;font-size:13px;font-weight:700;color:#636366;border:none;background:transparent;font-family:inherit;cursor:pointer}
 .mgmt-tab.on{background:#fff;color:#1c1c1e;box-shadow:0 1px 4px rgba(0,0,0,.1)}
@@ -202,6 +223,60 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 </div>
 
 </div>
+
+<!-- VISA WIDGET -->
+<div class="visa-wrap">
+  <div class="visa-top">
+    <span class="visa-title">💳 Kartela VISA Kredite</span>
+    <button class="visa-cfg-btn" onclick="openVisaCfg()">⚙️ Cilësimet</button>
+  </div>
+  <div class="visa-numbers">
+    <div class="visa-used-block">
+      <div class="visa-used-lbl">Shpenzuar me kartele</div>
+      <div class="visa-used-val" id="vUsed">0<span class="visa-used-cur">ден</span></div>
+    </div>
+    <div class="visa-avail-block">
+      <div class="visa-avail-lbl">Disponueshëm</div>
+      <div class="visa-avail-val" id="vAvail">0 ден</div>
+    </div>
+  </div>
+  <div class="visa-bar-bg"><div class="visa-bar-fg" id="vBar" style="width:0%"></div></div>
+  <div class="visa-stats">
+    <div class="visa-stat"><div class="visa-stat-lbl">Limiti</div><div class="visa-stat-val" id="vLimit">89.669 ден</div></div>
+    <div class="visa-stat"><div class="visa-stat-lbl">Kest mujor</div><div class="visa-stat-val" id="vKest">0 ден</div></div>
+    <div class="visa-stat"><div class="visa-stat-lbl">Pas kestit</div><div class="visa-stat-val" id="vAfter">0 ден</div></div>
+  </div>
+</div>
+
+<!-- VISA CONFIG MODAL -->
+<div class="overlay" id="visaCfgModal" onclick="overlayClick(event,'visaCfgModal')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <button class="sheet-cancel" onclick="closeM('visaCfgModal')">Anulo</button>
+      <span class="sheet-title">💳 VISA Cilësimet</span>
+      <div style="width:52px"></div>
+    </div>
+    <div class="sheet-body">
+      <div class="fg">
+        <div class="fg-lbl">Limiti i kartës (ден)</div>
+        <div class="ios-card">
+          <div class="ios-r"><span class="ios-rl">Limiti</span>
+          <input type="number" class="ios-fi" id="vcLimit" inputmode="numeric" placeholder="89669"></div>
+        </div>
+      </div>
+      <div class="fg">
+        <div class="fg-lbl">Kesti fiks mujor (ден)</div>
+        <div class="ios-card">
+          <div class="ios-r"><span class="ios-rl">Kesti</span>
+          <input type="number" class="ios-fi" id="vcKest" inputmode="numeric" placeholder="0"></div>
+        </div>
+      </div>
+      <button class="save-btn" style="background:#1c2b4a;margin-top:6px" onclick="saveVisaCfg()">Ruaj</button>
+    </div>
+  </div>
+</div>
+
 
 <div class="tab-bar">
   <button class="tab on" id="tabAll" onclick="setTab('all')">Të gjitha</button>
@@ -492,12 +567,12 @@ function saveForm(){
   }
   DB.ex=ex;
   closeM('formModal');
-  renderChips(); render(); }
+  renderChips(); render(); renderVisa(); }
 
 function delEx(id){
   if(!confirm('Fshi këtë transaksion?')) return;
   DB.ex=DB.ex.filter(e=>e.id!==id);
-  render(); }
+  render(); renderVisa(); }
 
 // ── MANAGEMENT ──
 function openMgmt(type){
@@ -581,6 +656,49 @@ function addCat(){
 function closeM(id){document.getElementById(id).classList.remove('on');}
 function overlayClick(e,id){if(e.target===document.getElementById(id))closeM(id);}
 
+
+// ── VISA ──
+const VCFG = {
+  get(){ return JSON.parse(localStorage.getItem('visa2_cfg')||'{"limit":89669,"kest":0}'); },
+  set(v){ localStorage.setItem('visa2_cfg',JSON.stringify(v)); }
+};
+
+function renderVisa(){
+  const cfg = VCFG.get();
+  const limit = cfg.limit || 89669;
+  const kest = cfg.kest || 0;
+  // shpenzuar me kartele (te gjitha, jo vetem muajin)
+  const cardSpent = DB.ex.filter(e=>(e.t==='exp'||!e.t) && e.p==='kartele')
+    .reduce((s,e)=>s+Number(e.a),0);
+  const avail = limit - cardSpent;
+  const afterKest = avail - kest;
+  const pct = Math.min(100, limit>0 ? (cardSpent/limit)*100 : 0);
+
+  document.getElementById('vUsed').innerHTML = fmt(cardSpent)+'<span class="visa-used-cur">ден</span>';
+  document.getElementById('vAvail').textContent = fmt(Math.max(0,avail))+' ден';
+  document.getElementById('vAvail').style.color = avail <= 0 ? '#f87171' : avail < kest ? '#facc15' : '#4ade80';
+  document.getElementById('vLimit').textContent = fmt(limit)+' ден';
+  document.getElementById('vKest').textContent = fmt(kest)+' ден';
+  document.getElementById('vAfter').textContent = fmt(Math.max(0,afterKest))+' ден';
+  document.getElementById('vBar').style.width = pct+'%';
+}
+
+function openVisaCfg(){
+  const cfg = VCFG.get();
+  document.getElementById('vcLimit').value = cfg.limit||89669;
+  document.getElementById('vcKest').value = cfg.kest||'';
+  document.getElementById('visaCfgModal').classList.add('on');
+}
+
+function saveVisaCfg(){
+  VCFG.set({
+    limit: parseFloat(document.getElementById('vcLimit').value)||89669,
+    kest: parseFloat(document.getElementById('vcKest').value)||0
+  });
+  closeM('visaCfgModal');
+  renderVisa();
+}
+
 // ── MIGRIMI nga versioni i vjetër ──
 (function migrate(){
   if(!localStorage.getItem('shp_ex')){
@@ -629,6 +747,7 @@ function overlayClick(e,id){if(e.target===document.getElementById(id))closeM(id)
 // ── INIT ──
 renderChips();
 render();
+renderVisa();
 </script>
 </body>
 </html>
