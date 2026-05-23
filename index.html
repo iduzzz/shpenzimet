@@ -337,7 +337,7 @@ function render(){
   let list=[...DB.ex].sort((a,b)=>b.d.localeCompare(a.d)||b.ts-a.ts);
 
   const allInc=list.filter(e=>e.t==='inc');
-  const allExp=list.filter(e=>e.t==='exp');
+  const allExp=list.filter(e=>e.t==='exp'||!e.t);
   const totInc=allInc.reduce((s,e)=>s+Number(e.a),0);
   const totExp=allExp.reduce((s,e)=>s+Number(e.a),0);
   const net=totInc-totExp;
@@ -348,7 +348,7 @@ function render(){
   document.getElementById('expTotal').textContent=fmt(totExp);
 
   if(activeTab==='inc') list=list.filter(e=>e.t==='inc');
-  else if(activeTab==='exp') list=list.filter(e=>e.t==='exp');
+  else if(activeTab==='exp') list=list.filter(e=>e.t==='exp'||!e.t);
   if(fCat!=='all') list=list.filter(e=>e.cid===fCat);
   if(dF) list=list.filter(e=>e.d>=dF);
   if(dT) list=list.filter(e=>e.d<=dT);
@@ -372,8 +372,7 @@ function render(){
   }
 
   const rows=list.map(e=>{
-    const isInc=e.t==='inc';
-    const cats=isInc?DB.src:DB.cats;
+    const isInc=e.t==='inc';    const cats=isInc?DB.src:DB.cats;
     const cat=cats.find(c=>c.id===e.cid)||{n:e.cid,e:'📦'};
     const dc=isInc?'#34c759':'#ff3b30';
     const pl=e.p==='kesh'?'Kesh':'Kartele';
@@ -383,7 +382,7 @@ function render(){
       '<div class="erow-info">'+
         '<div class="erow-name">'+cat.n+'</div>'+
         '<div class="erow-sub">'+
-          (isInc?'':'<span class="erow-dot" style="background:'+dc+'"></span><span>'+pl+'</span><span>·</span>')+
+          '<span class="erow-dot" style="background:'+dc+'"></span><span>'+pl+'</span><span>·</span>'+
           '<span>'+e.d+'</span>'+
         '</div>'+
         (e.nt?'<div class="erow-note">'+e.nt+'</div>':'')+
@@ -566,6 +565,14 @@ function addCat(){
 
 function closeM(id){document.getElementById(id).classList.remove('on');}
 function overlayClick(e,id){if(e.target===document.getElementById(id))closeM(id);}
+
+// ── FIX entries pa tip (të vjetra = shpenzime) ──
+(function fixTypes(){
+  const ex=DB.ex;
+  let changed=false;
+  ex.forEach(e=>{if(!e.t){e.t='exp';changed=true;}});
+  if(changed) DB.ex=ex;
+})();
 
 // ── INIT ──
 renderChips();
