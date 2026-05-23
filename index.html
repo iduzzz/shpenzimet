@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sq" style="background:#ffffff">
+<html lang="sq">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -10,642 +10,448 @@
 <title>Shpenzimet</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:#f5f5f7!important;color:#1c1c1e!important}
+body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7;color:#1c1c1e;min-height:100vh;padding-bottom:calc(90px + env(safe-area-inset-bottom,0px));-webkit-font-smoothing:antialiased}
+@media(prefers-color-scheme:dark){html,body{background:#f5f5f7!important;color:#1c1c1e!important}}
 
-html { background: #ffffff !important; }
+.hdr{background:#fff;border-bottom:1px solid #e5e5ea;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.hdr-title{font-size:17px;font-weight:800;color:#1c1c1e}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:#f2f2f7;border:none;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;color:#3a3a3c}
+.icon-btn:active{opacity:.5}
 
-body {
-  font-family: 'Frutiger','Frutiger LT Pro','Nunito',-apple-system,BlinkMacSystemFont,sans-serif;
-  background: #f7f7f8 !important;
-  color: #111111;
-  min-height: 100vh;
-  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
-  -webkit-font-smoothing: antialiased;
-  forced-color-adjust: none;
-}
+.hero{background:#fff;padding:28px 20px 22px;text-align:center;border-bottom:1px solid #e5e5ea}
+.hero-lbl{font-size:12px;font-weight:700;color:#8e8e93;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.hero-num{font-size:50px;font-weight:800;color:#1c1c1e;letter-spacing:-2px;line-height:1}
+.hero-cur{font-size:18px;font-weight:600;color:#aeaeb2;letter-spacing:0;margin-left:4px}
+.hero-period{font-size:13px;color:#aeaeb2;font-weight:500;margin:6px 0 18px}
+.hero-pills{display:flex;gap:10px;justify-content:center}
+.pill{display:flex;align-items:center;gap:7px;background:#f2f2f7;border-radius:20px;padding:8px 16px;border:1px solid #e5e5ea}
+.pill-dot{width:7px;height:7px;border-radius:50%}
+.pill-lbl{font-size:12px;font-weight:600;color:#8e8e93}
+.pill-val{font-size:14px;font-weight:800;color:#1c1c1e}
 
-/* Force light everywhere */
-@media (prefers-color-scheme: dark) {
-  html, body, * { forced-color-adjust: none; }
-  body { background: #f7f7f8 !important; color: #111111 !important; }
-}
+.date-row{display:flex;gap:8px;align-items:center;padding:14px 16px 0}
+.date-inp{flex:1;background:#fff;border:1px solid #e5e5ea;border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;color:#1c1c1e;font-family:inherit;outline:none;-webkit-appearance:none;color-scheme:light}
+.date-sep{font-size:14px;color:#c7c7cc;font-weight:700}
+.date-clr{width:30px;height:30px;border-radius:50%;background:#f2f2f7;border:none;cursor:pointer;font-size:12px;font-weight:700;color:#8e8e93;display:flex;align-items:center;justify-content:center}
+.date-clr:active{opacity:.5}
 
-/* ─── HEADER ─── */
-.hdr {
-  background: #ffffff;
-  border-bottom: 1px solid #e8e8ec;
-  padding: calc(env(safe-area-inset-top,0px) + 14px) 20px 14px;
-  position: sticky; top: 0; z-index: 99;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.hdr-title { font-size: 17px; font-weight: 800; color: #111111; letter-spacing: -0.3px; }
-.hdr-btn {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: #f0f0f5; border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; color: #555566;
-}
-.hdr-btn:active { opacity: 0.6; }
+.chips{display:flex;gap:7px;padding:12px 16px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:7px 14px;border-radius:18px;font-size:13px;font-weight:700;color:#636366;background:#fff;border:1px solid #e5e5ea;cursor:pointer;font-family:inherit}
+.chip.on{background:#007aff;color:#fff;border-color:#007aff}
+.chip:active{opacity:.7}
 
-/* ─── HERO ─── */
-.hero {
-  background: #ffffff;
-  padding: 30px 24px 24px;
-  text-align: center;
-  border-bottom: 1px solid #e8e8ec;
-}
-.hero-label { font-size: 13px; font-weight: 600; color: #888899; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
-.hero-num { font-size: 52px; font-weight: 800; color: #111111; letter-spacing: -3px; line-height: 1; }
-.hero-num .cur { font-size: 20px; font-weight: 600; color: #aaaabc; letter-spacing: 0px; margin-left: 4px; }
-.hero-period { font-size: 13px; color: #aaaabc; font-weight: 500; margin: 6px 0 20px; }
-.hero-row { display: flex; gap: 10px; justify-content: center; }
-.hero-pill {
-  display: flex; align-items: center; gap: 8px;
-  background: #f7f7f8; border-radius: 22px;
-  padding: 9px 18px; border: 1px solid #e8e8ec;
-}
-.hero-pill-dot { width: 8px; height: 8px; border-radius: 50%; }
-.hero-pill-lbl { font-size: 12px; font-weight: 600; color: #888899; }
-.hero-pill-val { font-size: 14px; font-weight: 800; color: #111111; }
+.list-lbl{font-size:12px;font-weight:700;color:#aeaeb2;text-transform:uppercase;letter-spacing:.6px;padding:4px 20px 8px}
 
-/* ─── DATE ROW ─── */
-.date-row {
-  display: flex; gap: 8px; align-items: center;
-  padding: 14px 16px 0;
-}
-.date-inp {
-  flex: 1; background: #ffffff; border: 1px solid #e0e0ea;
-  border-radius: 10px; padding: 9px 12px;
-  font-size: 13px; font-weight: 600; color: #111111;
-  font-family: inherit; outline: none;
-  -webkit-appearance: none; color-scheme: light;
-}
-.date-sep { font-size: 14px; color: #ccccdd; font-weight: 700; }
-.date-clr {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: #f0f0f5; border: none; cursor: pointer;
-  font-size: 12px; font-weight: 700; color: #888899;
-  display: flex; align-items: center; justify-content: center;
-}
+.card-wrap{margin:0 16px;background:#fff;border-radius:14px;border:1px solid #e5e5ea;overflow:hidden}
+.erow{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-bottom:1px solid #f2f2f7}
+.erow:last-child{border-bottom:none}
+.erow-ico{width:38px;height:38px;border-radius:10px;background:#f2f2f7;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.erow-info{flex:1;min-width:0}
+.erow-name{font-size:15px;font-weight:700;color:#1c1c1e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.erow-sub{font-size:12px;color:#aeaeb2;font-weight:500;margin-top:2px;display:flex;align-items:center;gap:5px}
+.erow-dot{width:5px;height:5px;border-radius:50%;display:inline-block;flex-shrink:0}
+.erow-note{font-size:11px;color:#c7c7cc;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.erow-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.erow-amt{font-size:15px;font-weight:800;color:#1c1c1e}
+.erow-amt .cur{font-size:10px;font-weight:600;color:#c7c7cc;margin-left:1px}
+.erow-btns{display:flex;gap:5px}
+.btn-edit{width:22px;height:22px;border-radius:50%;background:#e8f0fe;border:none;color:#007aff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+.btn-del{width:22px;height:22px;border-radius:50%;background:#fff0f0;border:none;color:#ff3b30;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+.btn-edit:active,.btn-del:active{opacity:.5}
 
-/* ─── CHIPS ─── */
-.chips {
-  display: flex; gap: 7px; padding: 12px 16px;
-  overflow-x: auto; scrollbar-width: none;
-}
-.chips::-webkit-scrollbar { display: none; }
-.chip {
-  flex-shrink: 0; padding: 7px 15px; border-radius: 20px;
-  font-size: 13px; font-weight: 700; color: #666677;
-  background: #ffffff; border: 1px solid #e0e0ea;
-  cursor: pointer; font-family: inherit; white-space: nowrap;
-}
-.chip.on { background: #3b82f6; color: #ffffff; border-color: #3b82f6; }
-.chip:active { opacity: 0.7; }
+.empty{background:#fff;border-radius:14px;border:1px solid #e5e5ea;margin:0 16px;padding:52px 20px;text-align:center}
+.empty-ico{font-size:40px;margin-bottom:12px}
+.empty-t{font-size:16px;font-weight:800;color:#1c1c1e;margin-bottom:5px}
+.empty-s{font-size:13px;color:#aeaeb2;font-weight:500}
 
-/* ─── LIST ─── */
-.list-lbl { font-size: 12px; font-weight: 700; color: #aaaabc; text-transform: uppercase; letter-spacing: 0.6px; padding: 0 20px 8px; }
+.fab-bar{position:fixed;bottom:0;left:0;right:0;padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 12px);background:linear-gradient(to top,#f5f5f7 55%,transparent);z-index:49}
+.fab{width:100%;padding:16px;border-radius:14px;background:#007aff;color:#fff;border:none;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(0,122,255,.3)}
+.fab:active{opacity:.85}
 
-.card-list {
-  margin: 0 16px;
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e8e8ec;
-  overflow: hidden;
-}
+/* MODALS */
+.overlay{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;background:rgba(0,0,0,.2);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.overlay.on{display:flex}
+.sheet{width:100%;max-width:480px;margin:0 auto;background:#f5f5f7;border-radius:22px 22px 0 0;padding:8px 0 calc(env(safe-area-inset-bottom,0px) + 20px);animation:up .26s cubic-bezier(.32,.72,0,1);max-height:93vh;overflow-y:auto}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-handle{width:38px;height:5px;background:#d1d1d6;border-radius:3px;margin:0 auto 14px}
+.sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 20px 14px;border-bottom:1px solid #e5e5ea;margin-bottom:8px}
+.sheet-title{font-size:17px;font-weight:800;color:#1c1c1e}
+.sheet-cancel{font-size:16px;font-weight:600;color:#007aff;background:none;border:none;font-family:inherit;cursor:pointer;padding:4px 0}
+.sheet-cancel:active{opacity:.5}
+.sheet-body{padding:0 16px}
 
-.row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 13px 16px;
-  border-bottom: 1px solid #f0f0f5;
-  background: #ffffff;
-}
-.row:last-child { border-bottom: none; }
+.fg{margin-bottom:20px}
+.fg-lbl{font-size:12px;font-weight:700;color:#8e8e93;text-transform:uppercase;letter-spacing:.5px;padding:0 4px;margin-bottom:7px}
+.ios-card{background:#fff;border-radius:12px;border:1px solid #e5e5ea;overflow:hidden}
+.ios-r{display:flex;align-items:center;padding:0 14px;min-height:46px;border-bottom:1px solid #f2f2f7}
+.ios-r:last-child{border-bottom:none}
+.ios-rl{font-size:15px;font-weight:600;color:#1c1c1e;flex:1}
+.ios-fi{flex:1;border:none;outline:none;background:transparent;font-size:15px;font-weight:600;color:#1c1c1e;font-family:inherit;text-align:right;padding:12px 0;-webkit-appearance:none;color-scheme:light;min-width:0}
+.ios-fi::placeholder{color:#c7c7cc}
+.ios-fi.big{font-size:26px;font-weight:800}
+.ios-unit{font-size:13px;font-weight:700;color:#c7c7cc;margin-left:5px;flex-shrink:0}
 
-.row-ico {
-  width: 38px; height: 38px; border-radius: 10px;
-  background: #f7f7f8; display: flex; align-items: center;
-  justify-content: center; font-size: 18px; flex-shrink: 0;
-}
-.row-info { flex: 1; min-width: 0; }
-.row-name { font-size: 15px; font-weight: 700; color: #111111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.row-sub { font-size: 12px; color: #aaaabc; font-weight: 500; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
-.row-dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
-.row-note { font-size: 11px; color: #ccccdd; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
-.row-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
-.row-amt { font-size: 15px; font-weight: 800; color: #111111; }
-.row-amt .cur { font-size: 10px; font-weight: 600; color: #ccccdd; margin-left: 1px; }
-.row-del {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #fff0f0; border: none; color: #ff4444;
-  font-size: 11px; font-weight: 800; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-.row-del:active { opacity: 0.6; }
-.row-edit {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #eff6ff; border: none; color: #3b82f6;
-  font-size: 11px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-.row-edit:active { opacity: 0.6; }
+.seg{display:flex;background:#e5e5ea;border-radius:10px;padding:3px;gap:3px}
+.seg-b{flex:1;padding:9px;border-radius:8px;font-size:14px;font-weight:700;color:#636366;border:none;background:transparent;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:all .15s}
+.seg-b.on{background:#fff;color:#1c1c1e;box-shadow:0 1px 4px rgba(0,0,0,.1)}
 
-.empty {
-  background: #ffffff; border-radius: 16px; border: 1px solid #e8e8ec;
-  margin: 0 16px; padding: 52px 20px; text-align: center;
-}
-.empty-ico { font-size: 40px; margin-bottom: 12px; }
-.empty-t { font-size: 16px; font-weight: 800; color: #111111; margin-bottom: 5px; }
-.empty-s { font-size: 13px; color: #aaaabc; font-weight: 500; }
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cat-t{background:#fff;border-radius:12px;border:1.5px solid #e5e5ea;padding:11px 6px 9px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.cat-t .e{font-size:22px}
+.cat-t .n{font-size:11px;font-weight:700;color:#636366}
+.cat-t.sel{border-color:#007aff;background:#e8f4ff}
+.cat-t.sel .n{color:#007aff}
+.cat-t:active{opacity:.7}
 
-/* ─── FAB ─── */
-.fab-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  padding: 12px 16px calc(env(safe-area-inset-bottom,0px) + 12px);
-  background: linear-gradient(to top, #f7f7f8 60%, transparent);
-  z-index: 98;
-}
-.fab {
-  width: 100%; padding: 16px; border-radius: 14px;
-  background: #3b82f6; color: #ffffff; border: none;
-  font-size: 16px; font-weight: 800; font-family: inherit;
-  cursor: pointer; letter-spacing: -0.2px;
-  box-shadow: 0 4px 16px rgba(59,130,246,0.35);
-}
-.fab:active { opacity: 0.85; }
+.ta{width:100%;background:#fff;border:1px solid #e5e5ea;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:500;color:#1c1c1e;font-family:inherit;outline:none;resize:none;height:68px}
+.ta::placeholder{color:#c7c7cc}
 
-/* ─── MODAL ─── */
-.overlay {
-  position: fixed; inset: 0; z-index: 200;
-  display: none; align-items: flex-end;
-  background: rgba(17,17,17,0.18);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-.overlay.on { display: flex; }
+.save-btn{width:100%;padding:16px;background:#007aff;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:6px;box-shadow:0 3px 12px rgba(0,122,255,.3)}
+.save-btn:active{opacity:.85}
 
-.sheet {
-  width: 100%; max-width: 480px; margin: 0 auto;
-  background: #f7f7f8;
-  border-radius: 22px 22px 0 0;
-  padding: 8px 0 calc(env(safe-area-inset-bottom,0px) + 20px);
-  animation: up 0.26s cubic-bezier(0.32,0.72,0,1);
-  max-height: 92vh; overflow-y: auto;
-}
-@keyframes up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+/* CAT MANAGER */
+.cm-list{background:#fff;border-radius:12px;border:1px solid #e5e5ea;overflow:hidden;margin-bottom:14px;max-height:44vh;overflow-y:auto}
+.cm-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #f2f2f7;background:#fff}
+.cm-row:last-child{border-bottom:none}
+.cm-em{font-size:22px;flex-shrink:0}
+.cm-nm{flex:1;font-size:15px;font-weight:700;color:#1c1c1e}
+.cm-edit{width:28px;height:28px;border-radius:8px;background:#e8f4ff;border:none;color:#007aff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cm-del-btn{width:28px;height:28px;border-radius:50%;background:#ff3b30;border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cm-edit:active,.cm-del-btn:active{opacity:.6}
 
-.sheet-handle { width: 38px; height: 5px; background: #ddddea; border-radius: 3px; margin: 0 auto 14px; }
+.cm-edit-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #f2f2f7;background:#f8f8ff}
+.cm-edit-row:last-child{border-bottom:none}
+.em-in{width:44px;height:40px;background:#f2f2f7;border:1px solid #e5e5ea;border-radius:8px;font-size:20px;text-align:center;outline:none;font-family:inherit;flex-shrink:0}
+.nm-in{flex:1;background:#f2f2f7;border:1px solid #e5e5ea;border-radius:8px;padding:9px 10px;font-size:14px;font-weight:600;color:#1c1c1e;font-family:inherit;outline:none}
+.nm-in::placeholder{color:#c7c7cc}
+.ok-btn{width:36px;height:36px;border-radius:8px;background:#007aff;border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cancel-btn-sm{width:36px;height:36px;border-radius:8px;background:#f2f2f7;border:none;color:#636366;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ok-btn:active,.cancel-btn-sm:active{opacity:.6}
 
-.sheet-hdr {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 20px 14px; border-bottom: 1px solid #e8e8ec; margin-bottom: 6px;
-}
-.sheet-title { font-size: 17px; font-weight: 800; color: #111111; }
-.sheet-cancel { font-size: 15px; font-weight: 600; color: #3b82f6; background: none; border: none; font-family: inherit; cursor: pointer; padding: 0; }
-.sheet-cancel:active { opacity: 0.6; }
-
-.sheet-body { padding: 0 16px; }
-
-/* Form groups */
-.fg { margin-bottom: 20px; }
-.fg-lbl { font-size: 12px; font-weight: 700; color: #888899; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 4px; margin-bottom: 7px; }
-
-.ios-card {
-  background: #ffffff; border-radius: 14px;
-  border: 1px solid #e8e8ec; overflow: hidden;
-}
-.ios-r {
-  display: flex; align-items: center; padding: 0 14px;
-  min-height: 46px; border-bottom: 1px solid #f0f0f5;
-}
-.ios-r:last-child { border-bottom: none; }
-.ios-rl { font-size: 15px; font-weight: 600; color: #111111; flex: 1; }
-.ios-fi {
-  flex: 1; border: none; outline: none; background: transparent;
-  font-size: 15px; font-weight: 600; color: #111111;
-  font-family: inherit; text-align: right; padding: 12px 0;
-  -webkit-appearance: none; color-scheme: light;
-}
-.ios-fi::placeholder { color: #ccccdd; }
-.ios-fi.big { font-size: 26px; font-weight: 800; }
-.ios-unit { font-size: 13px; font-weight: 700; color: #ccccdd; margin-left: 5px; flex-shrink: 0; }
-
-/* Segmented */
-.seg { display: flex; background: #ebebf0; border-radius: 10px; padding: 3px; gap: 3px; }
-.seg-b {
-  flex: 1; padding: 9px; border-radius: 8px;
-  font-size: 14px; font-weight: 700; color: #666677;
-  border: none; background: transparent; font-family: inherit;
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-  cursor: pointer; transition: all 0.15s;
-}
-.seg-b.on { background: #ffffff; color: #111111; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
-
-/* Cat grid */
-.cat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-.cat-t {
-  background: #ffffff; border-radius: 12px; border: 1.5px solid #e8e8ec;
-  padding: 11px 6px 9px; text-align: center; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-}
-.cat-t .e { font-size: 22px; }
-.cat-t .n { font-size: 11px; font-weight: 700; color: #888899; }
-.cat-t.sel { border-color: #3b82f6; background: #eff6ff; }
-.cat-t.sel .n { color: #3b82f6; }
-.cat-t:active { opacity: 0.7; }
-
-/* Textarea */
-.ta {
-  width: 100%; background: #ffffff; border: 1px solid #e8e8ec;
-  border-radius: 14px; padding: 13px 14px;
-  font-size: 15px; font-weight: 500; color: #111111;
-  font-family: inherit; outline: none; resize: none; height: 70px;
-}
-.ta::placeholder { color: #ccccdd; }
-
-/* Save btn */
-.save-btn {
-  width: 100%; padding: 16px; background: #3b82f6; color: #ffffff;
-  border: none; border-radius: 14px; font-size: 16px; font-weight: 800;
-  font-family: inherit; cursor: pointer; margin-top: 6px;
-  box-shadow: 0 3px 12px rgba(59,130,246,0.3);
-}
-.save-btn:active { opacity: 0.85; }
-
-/* Cat mgmt */
-.cm-list {
-  background: #ffffff; border-radius: 14px; border: 1px solid #e8e8ec;
-  overflow: hidden; margin-bottom: 14px; max-height: 44vh; overflow-y: auto;
-}
-.cm-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 14px; border-bottom: 1px solid #f0f0f5;
-  background: #ffffff;
-}
-.cm-row:last-child { border-bottom: none; }
-.cm-em { font-size: 22px; }
-.cm-nm { flex: 1; font-size: 15px; font-weight: 700; color: #111111; }
-.cm-del {
-  width: 22px; height: 22px; border-radius: 50%;
-  background: #ff4444; border: none; color: #ffffff;
-  font-size: 13px; font-weight: 800; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-.cm-del:active { opacity: 0.7; }
-.cm-edit-btn {
-  width: 22px; height: 22px; border-radius: 50%;
-  background: #eff6ff; border: none; color: #3b82f6;
-  font-size: 12px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-.cm-edit-btn:active { opacity: 0.7; }
-
-.add-row { display: flex; gap: 8px; align-items: center; }
-.em-in {
-  width: 48px; height: 46px; background: #ffffff;
-  border: 1px solid #e8e8ec; border-radius: 12px;
-  font-size: 20px; text-align: center; outline: none;
-  font-family: inherit; flex-shrink: 0;
-}
-.nm-in {
-  flex: 1; background: #ffffff; border: 1px solid #e8e8ec;
-  border-radius: 12px; padding: 12px 13px;
-  font-size: 15px; font-weight: 600; color: #111111;
-  font-family: inherit; outline: none;
-}
-.nm-in::placeholder { color: #ccccdd; }
-.add-btn-sm {
-  width: 46px; height: 46px; border-radius: 12px;
-  background: #3b82f6; border: none; color: #ffffff;
-  font-size: 24px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 8px rgba(59,130,246,0.3);
-}
-.add-btn-sm:active { opacity: 0.8; }
-.done-btn {
-  width: 100%; margin-top: 14px; padding: 14px;
-  background: #f0f0f5; color: #111111; border: none;
-  border-radius: 14px; font-size: 15px; font-weight: 700;
-  font-family: inherit; cursor: pointer;
-}
+.add-row{display:flex;gap:8px;align-items:center}
+.add-em-in{width:46px;height:44px;background:#fff;border:1px solid #e5e5ea;border-radius:10px;font-size:20px;text-align:center;outline:none;font-family:inherit;flex-shrink:0}
+.add-nm-in{flex:1;background:#fff;border:1px solid #e5e5ea;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;color:#1c1c1e;font-family:inherit;outline:none}
+.add-nm-in::placeholder{color:#c7c7cc}
+.add-plus{width:44px;height:44px;border-radius:10px;background:#007aff;border:none;color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,122,255,.25)}
+.add-plus:active{opacity:.8}
+.done-btn{width:100%;margin-top:14px;padding:14px;background:#f2f2f7;color:#1c1c1e;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer}
+.done-btn:active{opacity:.7}
 </style>
 </head>
 <body>
 
 <div class="hdr">
   <span class="hdr-title">Shpenzimet</span>
-  <button class="hdr-btn" id="btnCats">⚙️</button>
+  <button class="icon-btn" onclick="openCatModal()">⚙️</button>
 </div>
 
 <div class="hero">
-  <div class="hero-label">Totali</div>
-  <div class="hero-num" id="totalAmt">0<span class="cur">ден</span></div>
+  <div class="hero-lbl">Totali</div>
+  <div class="hero-num" id="heroNum">0<span class="hero-cur">ден</span></div>
   <div class="hero-period" id="heroPeriod">Të gjitha shpenzimet</div>
-  <div class="hero-row">
-    <div class="hero-pill">
-      <div class="hero-pill-dot" style="background:#22c55e"></div>
-      <span class="hero-pill-lbl">Kesh</span>
-      <span class="hero-pill-val" id="cashAmt">0</span>
+  <div class="hero-pills">
+    <div class="pill">
+      <div class="pill-dot" style="background:#34c759"></div>
+      <span class="pill-lbl">Kesh</span>
+      <span class="pill-val" id="cashAmt">0</span>
     </div>
-    <div class="hero-pill">
-      <div class="hero-pill-dot" style="background:#3b82f6"></div>
-      <span class="hero-pill-lbl">Kartele</span>
-      <span class="hero-pill-val" id="cardAmt">0</span>
+    <div class="pill">
+      <div class="pill-dot" style="background:#007aff"></div>
+      <span class="pill-lbl">Kartele</span>
+      <span class="pill-val" id="cardAmt">0</span>
     </div>
   </div>
 </div>
 
 <div class="date-row">
-  <input type="date" class="date-inp" id="dFrom">
+  <input type="date" class="date-inp" id="dFrom" onchange="render()">
   <span class="date-sep">—</span>
-  <input type="date" class="date-inp" id="dTo">
-  <button class="date-clr" id="dClr">✕</button>
+  <input type="date" class="date-inp" id="dTo" onchange="render()">
+  <button class="date-clr" onclick="clearDates()">✕</button>
 </div>
 
 <div class="chips" id="chipBar"></div>
-
 <div class="list-lbl" id="listLbl">0 shpenzime</div>
 <div id="listEl"></div>
 
 <div class="fab-bar">
-  <button class="fab" id="fabBtn">+ Shto shpenzim</button>
+  <button class="fab" onclick="openAdd()">+ Shto shpenzim</button>
 </div>
 
-<!-- ADD MODAL -->
-<div class="overlay" id="addModal">
+<!-- ADD / EDIT MODAL -->
+<div class="overlay" id="formModal" onclick="overlayClick(event,'formModal')">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-hdr">
-      <button class="sheet-cancel" id="cancelAdd">Anulo</button>
-      <span class="sheet-title">Shpenzim i ri</span>
-      <div style="width:48px"></div>
+      <button class="sheet-cancel" onclick="closeModal('formModal')">Anulo</button>
+      <span class="sheet-title" id="formTitle">Shpenzim i ri</span>
+      <div style="width:52px"></div>
     </div>
     <div class="sheet-body">
       <div class="fg">
         <div class="ios-card">
           <div class="ios-r">
             <span class="ios-rl">Shuma</span>
-            <input type="number" class="ios-fi big" id="inAmt" placeholder="0" inputmode="decimal" min="0">
+            <input type="number" class="ios-fi big" id="fAmt" placeholder="0" inputmode="decimal" min="0">
             <span class="ios-unit">ден</span>
           </div>
           <div class="ios-r">
             <span class="ios-rl">Data</span>
-            <input type="date" class="ios-fi" id="inDate">
-          </div>
-        </div>
-      </div>
-
-      <div class="fg">
-        <div class="fg-lbl">Mënyra e pagesës</div>
-        <div class="seg">
-          <button class="seg-b on" id="pKesh" onclick="setPay('kesh')">💵 Kesh</button>
-          <button class="seg-b" id="pCard" onclick="setPay('kartele')">💳 Kartele</button>
-        </div>
-      </div>
-
-      <div class="fg">
-        <div class="fg-lbl">Kategoria</div>
-        <div class="cat-grid" id="catGrid"></div>
-      </div>
-
-      <div class="fg">
-        <div class="fg-lbl">Shënim</div>
-        <textarea class="ta" id="inNote" placeholder="Opsional..."></textarea>
-      </div>
-
-      <button class="save-btn" id="saveBtn">Regjistro shpenzimin</button>
-    </div>
-  </div>
-</div>
-
-<!-- EDIT EXPENSE MODAL -->
-<div class="overlay" id="editModal">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-hdr">
-      <button class="sheet-cancel" id="cancelEdit">Anulo</button>
-      <span class="sheet-title">Edito shpenzimin</span>
-      <div style="width:48px"></div>
-    </div>
-    <div class="sheet-body">
-      <div class="fg">
-        <div class="ios-card">
-          <div class="ios-r">
-            <span class="ios-rl">Shuma</span>
-            <input type="number" class="ios-fi big" id="edAmt" placeholder="0" inputmode="decimal" min="0">
-            <span class="ios-unit">ден</span>
-          </div>
-          <div class="ios-r">
-            <span class="ios-rl">Data</span>
-            <input type="date" class="ios-fi" id="edDate">
+            <input type="date" class="ios-fi" id="fDate">
           </div>
         </div>
       </div>
       <div class="fg">
         <div class="fg-lbl">Mënyra e pagesës</div>
         <div class="seg">
-          <button class="seg-b on" id="edKesh" onclick="setEditPay('kesh')">💵 Kesh</button>
-          <button class="seg-b" id="edCard" onclick="setEditPay('kartele')">💳 Kartele</button>
+          <button class="seg-b on" id="segKesh" onclick="setPay('kesh')">💵 Kesh</button>
+          <button class="seg-b" id="segCard" onclick="setPay('kartele')">💳 Kartele</button>
         </div>
       </div>
       <div class="fg">
         <div class="fg-lbl">Kategoria</div>
-        <div class="cat-grid" id="edCatGrid"></div>
+        <div class="cat-grid" id="fCatGrid"></div>
       </div>
       <div class="fg">
-        <div class="fg-lbl">Shënim</div>
-        <textarea class="ta" id="edNote" placeholder="Opsional..."></textarea>
+        <div class="fg-lbl">Shënim (opsional)</div>
+        <textarea class="ta" id="fNote" placeholder="Shënim..."></textarea>
       </div>
-      <button class="save-btn" id="editSaveBtn">Ruaj ndryshimet</button>
+      <button class="save-btn" onclick="saveForm()">Regjistro</button>
     </div>
   </div>
 </div>
 
-<!-- CAT MODAL -->
-<div class="overlay" id="catModal">
+<!-- CAT MANAGER MODAL -->
+<div class="overlay" id="catModal" onclick="overlayClick(event,'catModal')">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-hdr">
-      <div style="width:48px"></div>
+      <div style="width:52px"></div>
       <span class="sheet-title">Kategorite</span>
-      <button class="sheet-cancel" id="doneBtn">U krye</button>
+      <button class="sheet-cancel" onclick="closeCatModal()">U krye</button>
     </div>
     <div class="sheet-body">
       <div class="cm-list" id="cmList"></div>
       <div class="add-row">
-        <input type="text" class="em-in" id="newEm" maxlength="2" placeholder="📦">
-        <input type="text" class="nm-in" id="newNm" placeholder="Emri i kategorisë...">
-        <button class="add-btn-sm" id="addCatBtn">+</button>
+        <input type="text" class="add-em-in" id="newEm" maxlength="2" placeholder="📦">
+        <input type="text" class="add-nm-in" id="newNm" placeholder="Emri i ri...">
+        <button class="add-plus" onclick="addCat()">+</button>
       </div>
-      <button class="done-btn" id="doneBtnB">U krye ✓</button>
+      <button class="done-btn" onclick="closeCatModal()">U krye ✓</button>
     </div>
   </div>
 </div>
 
 <script>
+// ── DB ──
 const DB = {
-  get ex() { return JSON.parse(localStorage.getItem('shp_ex')||'[]'); },
-  set ex(v) { localStorage.setItem('shp_ex',JSON.stringify(v)); },
-  get cats() {
+  get ex(){return JSON.parse(localStorage.getItem('shp_ex')||'[]')},
+  set ex(v){localStorage.setItem('shp_ex',JSON.stringify(v))},
+  get cats(){
     const d=[
       {id:'ushqim',n:'Ushqim',e:'🛒'},{id:'restoran',n:'Restorant',e:'🍽️'},
       {id:'transport',n:'Transport',e:'🚗'},{id:'shendeti',n:'Shëndetësi',e:'💊'},
       {id:'veshje',n:'Veshje',e:'👗'},{id:'shtepie',n:'Shtëpi',e:'🏠'},
       {id:'argetime',n:'Argëtim',e:'🎬'},{id:'komunikim',n:'Komun.',e:'📱'},
-      {id:'tjera',n:'Tjera',e:'📦'},
+      {id:'tjera',n:'Tjera',e:'📦'}
     ];
     return JSON.parse(localStorage.getItem('shp_cats')||JSON.stringify(d));
   },
-  set cats(v) { localStorage.setItem('shp_cats',JSON.stringify(v)); }
+  set cats(v){localStorage.setItem('shp_cats',JSON.stringify(v))}
 };
 
 const fmt = n => Number(n).toLocaleString('mk-MK');
-const td = () => new Date().toISOString().slice(0,10);
+const today = () => new Date().toISOString().slice(0,10);
 
-let selCat=null, selPay='kesh', fCat='all', dF='', dT='';
+// ── STATE ──
+let fCat='all', editId=null, selCat=null, selPay='kesh';
 
-function setPay(p) {
-  selPay=p;
-  document.getElementById('pKesh').classList.toggle('on',p==='kesh');
-  document.getElementById('pCard').classList.toggle('on',p==='kartele');
-}
-
-function renderChips() {
+// ── CHIPS ──
+function renderChips(){
   let h=`<button class="chip ${fCat==='all'?'on':''}" onclick="setF('all')">Të gjitha</button>`;
-  DB.cats.forEach(c=>{ h+=`<button class="chip ${fCat===c.id?'on':''}" onclick="setF('${c.id}')">${c.e} ${c.n}</button>`; });
+  DB.cats.forEach(c=>{h+=`<button class="chip ${fCat===c.id?'on':''}" onclick="setF('${c.id}')">${c.e} ${c.n}</button>`;});
   document.getElementById('chipBar').innerHTML=h;
 }
-
 function setF(id){fCat=id;renderChips();render();}
 
-function getList(){
-  let l=[...DB.ex].reverse();
-  if(fCat!=='all') l=l.filter(e=>e.cid===fCat);
-  if(dF) l=l.filter(e=>e.d>=dF);
-  if(dT) l=l.filter(e=>e.d<=dT);
-  return l;
-}
-
+// ── RENDER LIST ──
 function render(){
-  const l=getList();
-  const tot=l.reduce((s,e)=>s+Number(e.a),0);
-  const cash=l.filter(e=>e.p==='kesh').reduce((s,e)=>s+Number(e.a),0);
-  const card=l.filter(e=>e.p==='kartele').reduce((s,e)=>s+Number(e.a),0);
-  document.getElementById('totalAmt').innerHTML=`${fmt(tot)}<span class="cur">ден</span>`;
+  const dF=document.getElementById('dFrom').value;
+  const dT=document.getElementById('dTo').value;
+  let list=[...DB.ex].reverse();
+  if(fCat!=='all') list=list.filter(e=>e.cid===fCat);
+  if(dF) list=list.filter(e=>e.d>=dF);
+  if(dT) list=list.filter(e=>e.d<=dT);
+
+  const tot=list.reduce((s,e)=>s+Number(e.a),0);
+  const cash=list.filter(e=>e.p==='kesh').reduce((s,e)=>s+Number(e.a),0);
+  const card=list.filter(e=>e.p==='kartele').reduce((s,e)=>s+Number(e.a),0);
+
+  document.getElementById('heroNum').innerHTML=fmt(tot)+'<span class="hero-cur">ден</span>';
   document.getElementById('cashAmt').textContent=fmt(cash);
   document.getElementById('cardAmt').textContent=fmt(card);
-  document.getElementById('listLbl').textContent=`${l.length} shpenzime`;
+  document.getElementById('listLbl').textContent=list.length+' shpenzime';
+
   let per='Të gjitha shpenzimet';
-  if(dF&&dT) per=`${dF} — ${dT}`;
-  else if(dF) per=`Nga ${dF}`;
-  else if(dT) per=`Deri ${dT}`;
-  else if(fCat!=='all'){const c=DB.cats.find(x=>x.id===fCat);if(c)per=`${c.e} ${c.n}`;}
+  if(dF&&dT) per=dF+' — '+dT;
+  else if(dF) per='Nga '+dF;
+  else if(dT) per='Deri '+dT;
+  else if(fCat!=='all'){const c=DB.cats.find(x=>x.id===fCat);if(c)per=c.e+' '+c.n;}
   document.getElementById('heroPeriod').textContent=per;
+
   const el=document.getElementById('listEl');
-  if(!l.length){
-    el.innerHTML=`<div class="empty"><div class="empty-ico">💸</div><div class="empty-t">Nuk ka shpenzime</div><div class="empty-s">Shtype "+ Shto shpenzim" për të filluar</div></div>`;
+  if(!list.length){
+    el.innerHTML='<div class="empty"><div class="empty-ico">💸</div><div class="empty-t">Nuk ka shpenzime</div><div class="empty-s">Shtypni "+ Shto shpenzim"</div></div>';
     return;
   }
-  const rows=l.map(e=>{
+  const rows=list.map(e=>{
     const cat=DB.cats.find(c=>c.id===e.cid)||{n:e.cid,e:'📦'};
-    const dc=e.p==='kesh'?'#22c55e':'#3b82f6';
-    return `<div class="row">
-      <div class="row-ico">${cat.e}</div>
-      <div class="row-info">
-        <div class="row-name">${cat.n}</div>
-        <div class="row-sub"><span class="row-dot" style="background:${dc}"></span><span>${e.p==='kesh'?'Kesh':'Kartele'}</span><span>·</span><span>${e.d}</span></div>
-        ${e.nt?`<div class="row-note">${e.nt}</div>`:''}
-      </div>
-      <div class="row-right">
-        <div class="row-amt">${fmt(e.a)}<span class="cur">ден</span></div>
-        <div style="display:flex;gap:5px">
-          <button class="row-edit" onclick="openEdit('${e.id}')">✎</button>
-          <button class="row-del" onclick="delE('${e.id}')">✕</button>
-        </div>
-      </div>
-    </div>`;
+    const dc=e.p==='kesh'?'#34c759':'#007aff';
+    const pl=e.p==='kesh'?'Kesh':'Kartele';
+    return '<div class="erow">'+
+      '<div class="erow-ico">'+cat.e+'</div>'+
+      '<div class="erow-info">'+
+        '<div class="erow-name">'+cat.n+'</div>'+
+        '<div class="erow-sub"><span class="erow-dot" style="background:'+dc+'"></span><span>'+pl+'</span><span>·</span><span>'+e.d+'</span></div>'+
+        (e.nt?'<div class="erow-note">'+e.nt+'</div>':'')+
+      '</div>'+
+      '<div class="erow-right">'+
+        '<div class="erow-amt">'+fmt(e.a)+'<span class="cur">ден</span></div>'+
+        '<div class="erow-btns">'+
+          '<button class="btn-edit" onclick="openEdit(\''+e.id+'\')">✎</button>'+
+          '<button class="btn-del" onclick="delEx(\''+e.id+'\')">✕</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
   }).join('');
-  el.innerHTML=`<div class="card-list">${rows}</div>`;
+  el.innerHTML='<div class="card-wrap">'+rows+'</div>';
 }
 
-function renderCatGrid(){
-  document.getElementById('catGrid').innerHTML=DB.cats.map(c=>
-    `<div class="cat-t ${selCat===c.id?'sel':''}" onclick="sc('${c.id}')"><span class="e">${c.e}</span><span class="n">${c.n}</span></div>`
+function clearDates(){
+  document.getElementById('dFrom').value='';
+  document.getElementById('dTo').value='';
+  render();
+}
+
+// ── FORM (ADD / EDIT) ──
+function setPay(p){
+  selPay=p;
+  document.getElementById('segKesh').classList.toggle('on',p==='kesh');
+  document.getElementById('segCard').classList.toggle('on',p==='kartele');
+}
+
+function renderCatGrid(gridId){
+  document.getElementById(gridId).innerHTML=DB.cats.map(c=>
+    '<div class="cat-t '+(selCat===c.id?'sel':'')+'" onclick="selCatFn(\''+c.id+'\',\''+gridId+'\')">'+
+    '<span class="e">'+c.e+'</span><span class="n">'+c.n+'</span></div>'
   ).join('');
 }
-
-function sc(id){selCat=id;renderCatGrid();}
+function selCatFn(id,gridId){selCat=id;renderCatGrid(gridId);}
 
 function openAdd(){
-  selCat=null;selPay='kesh';
-  document.getElementById('inAmt').value='';
-  document.getElementById('inDate').value=td();
-  document.getElementById('inNote').value='';
-  setPay('kesh');renderCatGrid();
-  document.getElementById('addModal').classList.add('on');
-  setTimeout(()=>document.getElementById('inAmt').focus(),300);
+  editId=null; selCat=null; selPay='kesh';
+  document.getElementById('formTitle').textContent='Shpenzim i ri';
+  document.getElementById('fAmt').value='';
+  document.getElementById('fDate').value=today();
+  document.getElementById('fNote').value='';
+  setPay('kesh');
+  renderCatGrid('fCatGrid');
+  document.getElementById('formModal').classList.add('on');
+  setTimeout(()=>document.getElementById('fAmt').focus(),300);
 }
 
-function closeM(id){document.getElementById(id).classList.remove('on');}
+function openEdit(id){
+  const e=DB.ex.find(x=>x.id===id);
+  if(!e) return;
+  editId=id; selCat=e.cid; selPay=e.p;
+  document.getElementById('formTitle').textContent='Edito shpenzimin';
+  document.getElementById('fAmt').value=e.a;
+  document.getElementById('fDate').value=e.d;
+  document.getElementById('fNote').value=e.nt||'';
+  setPay(e.p);
+  renderCatGrid('fCatGrid');
+  document.getElementById('formModal').classList.add('on');
+}
 
-document.getElementById('fabBtn').onclick=openAdd;
-document.getElementById('cancelAdd').onclick=()=>closeM('addModal');
-document.getElementById('addModal').addEventListener('click',function(e){if(e.target===this)closeM('addModal');});
-document.getElementById('catModal').addEventListener('click',function(e){if(e.target===this)closeM('catModal');});
-
-document.getElementById('saveBtn').onclick=function(){
-  const a=parseFloat(document.getElementById('inAmt').value);
-  const d=document.getElementById('inDate').value;
-  const nt=document.getElementById('inNote').value.trim();
-  const inp=document.getElementById('inAmt');
-  if(!a||a<=0){inp.style.color='#ff4444';setTimeout(()=>inp.style.color='',1200);return;}
+function saveForm(){
+  const a=parseFloat(document.getElementById('fAmt').value);
+  const d=document.getElementById('fDate').value;
+  const nt=document.getElementById('fNote').value.trim();
+  const inp=document.getElementById('fAmt');
+  if(!a||a<=0){
+    inp.style.color='#ff3b30';
+    setTimeout(()=>inp.style.color='',1200);
+    return;
+  }
   if(!selCat){
-    const g=document.getElementById('catGrid');
-    g.style.outline='2px solid #ff4444';g.style.borderRadius='12px';
-    setTimeout(()=>{g.style.outline='';},1200);return;
+    const g=document.getElementById('fCatGrid');
+    g.style.outline='2px solid #ff3b30';
+    g.style.borderRadius='12px';
+    setTimeout(()=>{g.style.outline='';},1200);
+    return;
   }
   const ex=DB.ex;
-  ex.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2),a,d,cid:selCat,p:selPay,nt,ts:Date.now()});
-  DB.ex=ex;closeM('addModal');render();renderChips();
-};
-
-function delE(id){
-  if(!confirm('Fshi këtë shpenzim?'))return;
-  DB.ex=DB.ex.filter(e=>e.id!==id);render();
+  if(editId){
+    const i=ex.findIndex(x=>x.id===editId);
+    if(i>-1){ex[i].a=a;ex[i].d=d;ex[i].cid=selCat;ex[i].p=selPay;ex[i].nt=nt;}
+  } else {
+    ex.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2),a,d,cid:selCat,p:selPay,nt,ts:Date.now()});
+  }
+  DB.ex=ex;
+  closeModal('formModal');
+  renderChips();
+  render();
 }
 
-document.getElementById('btnCats').onclick=()=>{renderCM();document.getElementById('catModal').classList.add('on');};
-document.getElementById('doneBtn').onclick=()=>{closeM('catModal');renderChips();render();};
-document.getElementById('doneBtnB').onclick=()=>{closeM('catModal');renderChips();render();};
+function delEx(id){
+  if(!confirm('Fshi këtë shpenzim?')) return;
+  DB.ex=DB.ex.filter(e=>e.id!==id);
+  render();
+}
+
+// ── CATEGORY MANAGER ──
+function openCatModal(){
+  renderCM();
+  document.getElementById('catModal').classList.add('on');
+}
+
+function closeCatModal(){
+  closeModal('catModal');
+  renderChips();
+  render();
+}
 
 function renderCM(){
   document.getElementById('cmList').innerHTML=DB.cats.map(c=>
-    `<div class="cm-row" id="cmr-${c.id}">
-      <span class="cm-em">${c.e}</span>
-      <span class="cm-nm" id="cmn-${c.id}">${c.n}</span>
-      <button class="cm-edit-btn" onclick="startEditCat('${c.id}')">✎</button>
-      <button class="cm-del" onclick="delCat('${c.id}')">−</button>
-    </div>`
+    '<div class="cm-row" id="cmr-'+c.id+'">'+
+      '<span class="cm-em">'+c.e+'</span>'+
+      '<span class="cm-nm">'+c.n+'</span>'+
+      '<button class="cm-edit" onclick="startEditCat(\''+c.id+'\')">✎</button>'+
+      '<button class="cm-del-btn" onclick="delCat(\''+c.id+'\')">−</button>'+
+    '</div>'
   ).join('');
 }
 
 function startEditCat(id){
   const cat=DB.cats.find(c=>c.id===id);
-  if(!cat)return;
-  const row=document.getElementById('cmr-'+id);
-  row.innerHTML=`
-    <input type="text" class="em-in" id="ece-${id}" value="${cat.e}" maxlength="2" style="width:42px;height:38px">
-    <input type="text" class="nm-in" id="ecn-${id}" value="${cat.n}" style="flex:1;padding:8px 10px;font-size:14px">
-    <button class="add-btn-sm" style="width:38px;height:38px;font-size:18px" onclick="saveEditCat('${id}')">✓</button>
-    <button class="cm-del" onclick="renderCM()">✕</button>
-  `;
+  if(!cat) return;
+  document.getElementById('cmr-'+id).outerHTML=
+    '<div class="cm-edit-row" id="cmr-'+id+'">'+
+      '<input class="em-in" id="ece-'+id+'" value="'+cat.e+'" maxlength="2">'+
+      '<input class="nm-in" id="ecn-'+id+'" value="'+cat.n+'">'+
+      '<button class="ok-btn" onclick="saveEditCat(\''+id+'\')">✓</button>'+
+      '<button class="cancel-btn-sm" onclick="renderCM()">✕</button>'+
+    '</div>';
   document.getElementById('ecn-'+id).focus();
 }
 
 function saveEditCat(id){
   const em=document.getElementById('ece-'+id).value.trim()||'📦';
   const nm=document.getElementById('ecn-'+id).value.trim();
-  if(!nm)return;
+  if(!nm) return;
   const cats=DB.cats;
   const i=cats.findIndex(c=>c.id===id);
   if(i>-1){cats[i].e=em;cats[i].n=nm;}
@@ -654,79 +460,30 @@ function saveEditCat(id){
 }
 
 function delCat(id){
-  if(DB.ex.some(e=>e.cid===id)&&!confirm('Ka shpenzime. Fshi?'))return;
-  DB.cats=DB.cats.filter(c=>c.id!==id);renderCM();
+  if(DB.ex.some(e=>e.cid===id)&&!confirm('Kategoria ka shpenzime. Fshi gjithsesi?')) return;
+  DB.cats=DB.cats.filter(c=>c.id!==id);
+  renderCM();
 }
 
-document.getElementById('addCatBtn').onclick=function(){
+function addCat(){
   const e=document.getElementById('newEm').value.trim()||'📦';
   const n=document.getElementById('newNm').value.trim();
-  if(!n)return;
+  if(!n) return;
   const cats=DB.cats;
-  cats.push({id:n.toLowerCase().replace(/\s+/g,'_')+'_'+Date.now().toString(36),n,e});
+  cats.push({id:'cat_'+Date.now().toString(36),n,e});
   DB.cats=cats;
   document.getElementById('newEm').value='';
   document.getElementById('newNm').value='';
   renderCM();
-};
-
-let editId=null, editPay='kesh', editCat=null;
-
-function setEditPay(p){
-  editPay=p;
-  document.getElementById('edKesh').classList.toggle('on',p==='kesh');
-  document.getElementById('edCard').classList.toggle('on',p==='kartele');
 }
 
-function openEdit(id){
-  const e=DB.ex.find(x=>x.id===id);
-  if(!e)return;
-  editId=id; editPay=e.p; editCat=e.cid;
-  document.getElementById('edAmt').value=e.a;
-  document.getElementById('edDate').value=e.d;
-  document.getElementById('edNote').value=e.nt||'';
-  setEditPay(e.p);
-  renderEditCatGrid();
-  document.getElementById('editModal').classList.add('on');
-}
+// ── MODAL HELPERS ──
+function closeModal(id){document.getElementById(id).classList.remove('on');}
+function overlayClick(e,id){if(e.target===document.getElementById(id))closeModal(id);}
 
-function renderEditCatGrid(){
-  document.getElementById('edCatGrid').innerHTML=DB.cats.map(c=>
-    `<div class="cat-t ${editCat===c.id?'sel':''}" onclick="setEditCat('${c.id}')"><span class="e">${c.e}</span><span class="n">${c.n}</span></div>`
-  ).join('');
-}
-
-function setEditCat(id){editCat=id;renderEditCatGrid();}
-
-document.getElementById('cancelEdit').onclick=()=>closeM('editModal');
-document.getElementById('editModal').addEventListener('click',function(e){if(e.target===this)closeM('editModal');});
-
-document.getElementById('editSaveBtn').onclick=function(){
-  const a=parseFloat(document.getElementById('edAmt').value);
-  const d=document.getElementById('edDate').value;
-  const nt=document.getElementById('edNote').value.trim();
-  const inp=document.getElementById('edAmt');
-  if(!a||a<=0){inp.style.color='#ff4444';setTimeout(()=>inp.style.color='',1200);return;}
-  if(!editCat){
-    const g=document.getElementById('edCatGrid');
-    g.style.outline='2px solid #ff4444';g.style.borderRadius='12px';
-    setTimeout(()=>{g.style.outline='';},1200);return;
-  }
-  const ex=DB.ex;
-  const i=ex.findIndex(x=>x.id===editId);
-  if(i>-1){ex[i].a=a;ex[i].d=d;ex[i].cid=editCat;ex[i].p=editPay;ex[i].nt=nt;}
-  DB.ex=ex;
-  closeM('editModal');render();renderChips();
-};=function(){dF=this.value;render();};
-document.getElementById('dTo').onchange=function(){dT=this.value;render();};
-document.getElementById('dClr').onclick=function(){
-  dF='';dT='';
-  document.getElementById('dFrom').value='';
-  document.getElementById('dTo').value='';
-  render();
-};
-
-renderChips();render();
+// ── INIT ──
+renderChips();
+render();
 </script>
 </body>
 </html>
