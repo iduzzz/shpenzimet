@@ -409,60 +409,6 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 </div>
 
 <script>
-// ── SWIPE DOWN TO DISMISS ──
-(function(){
-  var startY=0, dragging=false, sheetEl=null, openedAt=0;
-
-  document.addEventListener('touchstart', function(e){
-    var sheet = e.target.closest('.sheet');
-    if(!sheet) return;
-    var overlay = sheet.parentElement;
-    if(!overlay || !overlay.classList.contains('on')) return;
-    // ignore taps right when modal just opened (within 300ms)
-    if(Date.now() - openedAt < 300) return;
-    if(sheet.scrollTop > 0) return;
-    startY = e.touches[0].clientY;
-    dragging = true;
-    sheetEl = sheet;
-  }, {passive:true});
-
-  document.addEventListener('touchmove', function(e){
-    if(!dragging || !sheetEl) return;
-    if(sheetEl.scrollTop > 0){ dragging=false; sheetEl=null; return; }
-    var dy = e.touches[0].clientY - startY;
-    if(dy < 0) { dragging=false; sheetEl=null; return; }
-    sheetEl.style.transform = 'translateY('+dy+'px)';
-  }, {passive:true});
-
-  document.addEventListener('touchend', function(e){
-    if(!dragging || !sheetEl) return;
-    var dy = e.changedTouches[0].clientY - startY;
-    if(dy > 110){
-      var overlay = sheetEl.parentElement;
-      sheetEl.style.transition = 'transform .22s ease';
-      sheetEl.style.transform = 'translateY(100%)';
-      setTimeout(function(){
-        if(overlay) overlay.classList.remove('on');
-        sheetEl.style.transform = '';
-        sheetEl.style.transition = '';
-        sheetEl = null;
-      }, 230);
-    } else {
-      sheetEl.style.transition = 'transform .2s ease';
-      sheetEl.style.transform = '';
-      setTimeout(function(){ if(sheetEl) sheetEl.style.transition = ''; }, 210);
-    }
-    dragging = false;
-  }, {passive:true});
-
-  // track when modals open
-  var origAdd = DOMTokenList.prototype.add;
-  DOMTokenList.prototype.add = function(){
-    origAdd.apply(this, arguments);
-    if(Array.from(arguments).includes('on')) openedAt = Date.now();
-  };
-})();
-
 // ── FIREBASE ──
 const firebaseConfig = {
   apiKey: "AIzaSyCKzbeu1sKCrqPepOOkanQStLi8Fg9tBcw",
