@@ -109,7 +109,7 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .fab-inc{background:#34c759;box-shadow:0 4px 14px rgba(52,199,89,.3)}
 
 /* MODAL */
-.overlay{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;background:rgba(0,0,0,.2);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.overlay{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;background:rgba(0,0,0,.2)}
 .overlay.on{display:flex}
 .sheet{width:100%;max-width:480px;margin:0 auto;background:#f5f5f7;border-radius:22px 22px 0 0;padding:8px 0 calc(env(safe-area-inset-bottom,0px) + 20px);animation:up .26s cubic-bezier(.32,.72,0,1);max-height:93vh;overflow-y:auto;touch-action:pan-y;}
 @keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
@@ -411,47 +411,56 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 <script>
 // ── SWIPE DOWN TO DISMISS ──
 (function(){
-  let startY=0, startScrollTop=0, dragging=false, target=null;
+  var startY=0, dragging=false, sheetEl=null, openedAt=0;
 
   document.addEventListener('touchstart', function(e){
-    const sheet = e.target.closest('.sheet');
+    var sheet = e.target.closest('.sheet');
     if(!sheet) return;
-    const overlay = sheet.parentElement;
+    var overlay = sheet.parentElement;
     if(!overlay || !overlay.classList.contains('on')) return;
+    // ignore taps right when modal just opened (within 300ms)
+    if(Date.now() - openedAt < 300) return;
+    if(sheet.scrollTop > 0) return;
     startY = e.touches[0].clientY;
-    startScrollTop = sheet.scrollTop;
     dragging = true;
-    target = sheet;
-    target.style.transition = 'none';
+    sheetEl = sheet;
   }, {passive:true});
 
   document.addEventListener('touchmove', function(e){
-    if(!dragging || !target) return;
-    const dy = e.touches[0].clientY - startY;
-    // only drag down when scrolled to top
-    if(dy > 0 && target.scrollTop <= 0){
-      target.style.transform = 'translateY('+dy+'px)';
-    }
+    if(!dragging || !sheetEl) return;
+    if(sheetEl.scrollTop > 0){ dragging=false; sheetEl=null; return; }
+    var dy = e.touches[0].clientY - startY;
+    if(dy < 0) { dragging=false; sheetEl=null; return; }
+    sheetEl.style.transform = 'translateY('+dy+'px)';
   }, {passive:true});
 
   document.addEventListener('touchend', function(e){
-    if(!dragging || !target) return;
-    const dy = e.changedTouches[0].clientY - startY;
-    target.style.transition = '';
-    if(dy > 100){
-      // close
-      target.style.transform = 'translateY(100%)';
+    if(!dragging || !sheetEl) return;
+    var dy = e.changedTouches[0].clientY - startY;
+    if(dy > 110){
+      var overlay = sheetEl.parentElement;
+      sheetEl.style.transition = 'transform .22s ease';
+      sheetEl.style.transform = 'translateY(100%)';
       setTimeout(function(){
-        const overlay = target.parentElement;
         if(overlay) overlay.classList.remove('on');
-        target.style.transform = '';
-      }, 220);
+        sheetEl.style.transform = '';
+        sheetEl.style.transition = '';
+        sheetEl = null;
+      }, 230);
     } else {
-      target.style.transform = '';
+      sheetEl.style.transition = 'transform .2s ease';
+      sheetEl.style.transform = '';
+      setTimeout(function(){ if(sheetEl) sheetEl.style.transition = ''; }, 210);
     }
     dragging = false;
-    target = null;
   }, {passive:true});
+
+  // track when modals open
+  var origAdd = DOMTokenList.prototype.add;
+  DOMTokenList.prototype.add = function(){
+    origAdd.apply(this, arguments);
+    if(Array.from(arguments).includes('on')) openedAt = Date.now();
+  };
 })();
 
 // ── FIREBASE ──
