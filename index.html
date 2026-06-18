@@ -31,6 +31,11 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .hdr{background:#fff;border-bottom:1px solid #e5e5ea;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .hdr-title{font-size:17px;font-weight:800;color:#1c1c1e}
 .hdr-btns{display:flex;gap:8px}
+.sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-left:6px;vertical-align:middle;background:#c7c7cc;transition:background .3s}
+.sync-dot.syncing{background:#facc15;animation:pulse 1s infinite}
+.sync-dot.ok{background:#34c759}
+.sync-dot.err{background:#ff3b30}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .icon-btn{width:34px;height:34px;border-radius:50%;background:#f2f2f7;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
 .icon-btn:active{opacity:.5}
 
@@ -182,13 +187,17 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .card-opt.sel .card-opt-check{background:#007aff;border-color:#007aff;color:#fff}
 
 /* ── VISA WIDGET ── */
-.visa-wrap{margin:12px 16px 0;background:linear-gradient(135deg,#1c2b4a 0%,#1a3a6b 100%);border-radius:16px;padding:16px 18px;position:relative;overflow:hidden;color:#fff}
-.visa-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.visa-wrap{margin:12px 16px 0;background:linear-gradient(135deg,#1c2b4a 0%,#1a3a6b 100%);border-radius:16px;padding:16px 18px;position:relative;overflow:hidden;color:#fff;cursor:pointer}
+.visa-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0}
+.visa-top.expanded{margin-bottom:14px}
 .visa-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:6px}
 .visa-top-right{display:flex;align-items:center;gap:8px}
 .visa-logo-txt{font-size:16px;font-weight:900;font-style:italic;color:rgba(255,255,255,0.4);letter-spacing:1px}
 .visa-cfg-btn{background:rgba(255,255,255,0.12);border:none;color:rgba(255,255,255,0.7);font-size:12px;border-radius:8px;padding:5px 10px;cursor:pointer;font-family:inherit;font-weight:600}
 .visa-cfg-btn:active{opacity:.6}
+.visa-toggle-ico{font-size:13px;color:rgba(255,255,255,0.5);font-weight:700;margin-left:4px;transition:transform .25s}
+.visa-body{overflow:hidden;transition:max-height .3s ease,opacity .3s ease;max-height:0;opacity:0}
+.visa-body.open{max-height:300px;opacity:1}
 .visa-numbers{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
 .visa-used-block{}
 .visa-used-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
@@ -207,11 +216,13 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .mgmt-tab{flex:1;padding:8px;border-radius:8px;font-size:13px;font-weight:700;color:#636366;border:none;background:transparent;font-family:inherit;cursor:pointer}
 .mgmt-tab.on{background:#fff;color:#1c1c1e;box-shadow:0 1px 4px rgba(0,0,0,.1)}
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
 <div class="hdr">
-  <span class="hdr-title">💰 Financat</span>
+  <span class="hdr-title">💰 Financat<span class="sync-dot" id="syncDot" title="Statusi i sinkronizimit"></span></span>
   <div class="hdr-btns">
     <button class="icon-btn" onclick="exportData()" title="Eksporto">💾</button>
     <button class="icon-btn" onclick="document.getElementById('importFile').click()" title="Importo">📂</button>
@@ -242,29 +253,32 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 </div>
 
 <!-- VISA WIDGET -->
-<div class="visa-wrap">
-  <div class="visa-top">
-    <span class="visa-title">💳 KARTELA VISA KREDITE</span>
+<div class="visa-wrap" id="visaWrap" onclick="toggleVisa(event)">
+  <div class="visa-top" id="visaTop">
+    <span class="visa-title">💳 KARTELA VISA KREDITE <span class="visa-toggle-ico" id="visaArrow">▼</span></span>
     <div class="visa-top-right">
       <span class="visa-logo-txt">VISA</span>
-      <button class="visa-cfg-btn" onclick="openVisaCfg()">⚙️ Cilësimet</button>
+      <button class="visa-cfg-btn" onclick="event.stopPropagation();openVisaCfg()">⚙️</button>
     </div>
   </div>
-  <div class="visa-numbers">
-    <div class="visa-used-block">
-      <div class="visa-used-lbl">Shpenzuar me kartele</div>
-      <div class="visa-used-val" id="vUsed">0<span class="visa-used-cur">ден</span></div>
+  <div class="visa-body" id="visaBody">
+    <div style="height:14px"></div>
+    <div class="visa-numbers">
+      <div class="visa-used-block">
+        <div class="visa-used-lbl">Shpenzuar me VISA</div>
+        <div class="visa-used-val" id="vUsed">0<span class="visa-used-cur">ден</span></div>
+      </div>
+      <div class="visa-avail-block">
+        <div class="visa-avail-lbl">Disponueshëm</div>
+        <div class="visa-avail-val" id="vAvail">0 ден</div>
+      </div>
     </div>
-    <div class="visa-avail-block">
-      <div class="visa-avail-lbl">Disponueshëm</div>
-      <div class="visa-avail-val" id="vAvail">0 ден</div>
+    <div class="visa-bar-bg"><div class="visa-bar-fg" id="vBar" style="width:0%"></div></div>
+    <div class="visa-stats">
+      <div class="visa-stat"><div class="visa-stat-lbl">Limiti</div><div class="visa-stat-val" id="vLimit">89.669 ден</div></div>
+      <div class="visa-stat"><div class="visa-stat-lbl">Kest mujor</div><div class="visa-stat-val" id="vKest">0 ден</div></div>
+      <div class="visa-stat"><div class="visa-stat-lbl">Pas kestit</div><div class="visa-stat-val" id="vAfter">0 ден</div></div>
     </div>
-  </div>
-  <div class="visa-bar-bg"><div class="visa-bar-fg" id="vBar" style="width:0%"></div></div>
-  <div class="visa-stats">
-    <div class="visa-stat"><div class="visa-stat-lbl">Limiti</div><div class="visa-stat-val" id="vLimit">89.669 ден</div></div>
-    <div class="visa-stat"><div class="visa-stat-lbl">Kest mujor</div><div class="visa-stat-val" id="vKest">0 ден</div></div>
-    <div class="visa-stat"><div class="visa-stat-lbl">Pas kestit</div><div class="visa-stat-val" id="vAfter">0 ден</div></div>
   </div>
 </div>
 
@@ -334,12 +348,12 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
         <div class="ios-card">
           <div class="ios-r">
             <span class="ios-rl">Shuma</span>
-            <input type="number" class="ios-fi big" id="fAmt" placeholder="0" inputmode="decimal" min="0">
+            <input type="number" class="ios-fi big" id="fAmt" placeholder="" inputmode="decimal" min="0" onfocus="if(this.value==='0')this.value=''" onclick="this.select()">
             <span class="ios-unit">ден</span>
           </div>
           <div class="ios-r">
             <span class="ios-rl">Data</span>
-            <input type="date" class="ios-fi" id="fDate">
+            <input type="date" class="ios-fi" id="fDate" onclick="this.showPicker&&this.showPicker()">
           </div>
         </div>
       </div>
@@ -394,6 +408,66 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 </div>
 
 <script>
+// ── FIREBASE ──
+const firebaseConfig = {
+  apiKey: "AIzaSyCKzbeu1sKCrqPepOOkanQStLi8Fg9tBcw",
+  authDomain: "finance-aa677.firebaseapp.com",
+  projectId: "finance-aa677",
+  storageBucket: "finance-aa677.firebasestorage.app",
+  messagingSenderId: "640398989615",
+  appId: "1:640398989615:web:9d4b1c3837374edfd2a9da"
+};
+firebase.initializeApp(firebaseConfig);
+const fdb = firebase.firestore();
+const cloudDoc = fdb.collection('financat').doc('data');
+try{ fdb.enablePersistence({synchronizeTabs:true}).catch(function(){}); }catch(e){}
+
+let syncTimer = null;
+function setSyncStatus(state){
+  const el = document.getElementById('syncDot');
+  if(!el) return;
+  el.className = 'sync-dot ' + state;
+}
+
+function pushToCloud(){
+  setSyncStatus('syncing');
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(function(){
+    cloudDoc.set({
+      ex: DB.ex,
+      cats: DB.cats,
+      src: DB.src,
+      cards: DB.cards,
+      visa: VCFG.get(),
+      updatedAt: Date.now()
+    }).then(function(){
+      setSyncStatus('ok');
+    }).catch(function(err){
+      console.error('Sync error', err);
+      setSyncStatus('err');
+    });
+  }, 400);
+}
+
+function pullFromCloud(){
+  return cloudDoc.get().then(function(snap){
+    if(snap.exists){
+      const data = snap.data();
+      if(data.ex) localStorage.setItem('shp_ex', JSON.stringify(data.ex));
+      if(data.cats) localStorage.setItem('shp_cats', JSON.stringify(data.cats));
+      if(data.src) localStorage.setItem('shp_src', JSON.stringify(data.src));
+      if(data.cards) localStorage.setItem('shp_cards', JSON.stringify(data.cards));
+      if(data.visa) localStorage.setItem('visa2_cfg', JSON.stringify(data.visa));
+      return true;
+    }
+    return false;
+  }).catch(function(err){
+    console.error('Pull error', err);
+    setSyncStatus('err');
+    return false;
+  });
+}
+
 // ── DB ──
 const DB = {
   get ex(){return JSON.parse(localStorage.getItem('shp_ex')||'[]')},
@@ -625,12 +699,12 @@ function saveForm(){
   }
   DB.ex=ex;
   closeM('formModal');
-  renderChips(); render(); renderVisa(); }
+  renderChips(); render(); renderVisa(); pushToCloud(); }
 
 function delEx(id){
   if(!confirm('Fshi këtë transaksion?')) return;
   DB.ex=DB.ex.filter(e=>e.id!==id);
-  render(); renderVisa(); }
+  render(); renderVisa(); pushToCloud(); }
 
 // ── MANAGEMENT ──
 function openMgmt(type){
@@ -690,6 +764,7 @@ function saveEditCat(id){
   if(i>-1){items[i].e=em;items[i].n=nm;}
   DB[key]=items;
   renderCM();
+  pushToCloud();
 }
 
 function delCat(id){
@@ -697,6 +772,7 @@ function delCat(id){
   if(DB.ex.some(e=>e.cid===id)&&!confirm('Ka transaksione. Fshi gjithsesi?')) return;
   DB[key]=DB[key].filter(c=>c.id!==id);
   renderCM();
+  pushToCloud();
 }
 
 function addCat(){
@@ -710,6 +786,7 @@ function addCat(){
   document.getElementById('newEm').value='';
   document.getElementById('newNm').value='';
   renderCM();
+  pushToCloud();
 }
 
 function closeM(id){document.getElementById(id).classList.remove('on');}
@@ -748,6 +825,7 @@ function importData(e){
       if(data.cards) DB.cards = data.cards;
       if(data.visa) VCFG.set(data.visa);
       renderChips(); render(); renderVisa();
+      pushToCloud();
       alert('✅ Të dhënat u importuan me sukses!');
     }catch(err){
       alert('❌ Skedari nuk është valid.');
@@ -798,6 +876,17 @@ function saveVisaCfg(){
   });
   closeM('visaCfgModal');
   renderVisa();
+  pushToCloud();
+}
+
+function toggleVisa(e){
+  if(e && e.target.classList.contains('visa-cfg-btn')) return;
+  const body = document.getElementById('visaBody');
+  const arrow = document.getElementById('visaArrow');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.textContent = isOpen ? '▼' : '▲';
+  arrow.style.transform = isOpen ? '' : 'rotate(180deg)';
 }
 
 // ── MIGRIMI nga versioni i vjetër ──
@@ -845,10 +934,22 @@ function saveVisaCfg(){
   if(changed) DB.ex=ex;
 })();
 
-// ── INIT ──
-renderChips();
-render();
-renderVisa();
+// ── INIT (cloud-first) ──
+setSyncStatus('syncing');
+pullFromCloud().then(function(hadCloud){
+  renderChips();
+  render();
+  renderVisa();
+  if(!hadCloud){
+    // hera e pare - dergo te dhenat lokale ekzistuese ne cloud
+    pushToCloud();
+  } else {
+    setSyncStatus('ok');
+  }
+}).catch(function(){
+  renderChips(); render(); renderVisa();
+  setSyncStatus('err');
+});
 </script>
 </body>
 </html>
