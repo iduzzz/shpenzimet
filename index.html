@@ -122,10 +122,11 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 .fg{margin-bottom:18px}
 .fg-lbl{font-size:12px;font-weight:700;color:#8e8e93;text-transform:uppercase;letter-spacing:.5px;padding:0 4px;margin-bottom:7px}
 .ios-card{background:#fff;border-radius:12px;border:1px solid #e5e5ea;overflow:hidden}
-.ios-r{display:flex;align-items:center;padding:0 14px;min-height:46px;border-bottom:1px solid #f2f2f7}
+.ios-r{display:flex;align-items:center;padding:0 14px;min-height:56px;border-bottom:1px solid #f2f2f7;cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0.05)}
 .ios-r:last-child{border-bottom:none}
-.ios-rl{font-size:15px;font-weight:600;color:#1c1c1e;flex:1}
-.ios-fi{flex:1;border:none;outline:none;background:transparent;font-size:15px;font-weight:600;color:#1c1c1e;font-family:inherit;text-align:right;padding:12px 0;-webkit-appearance:none;color-scheme:light;min-width:0}
+.ios-r:active{background:#f5f5f7}
+.ios-rl{font-size:15px;font-weight:600;color:#1c1c1e;flex:1;pointer-events:none}
+.ios-fi{flex:1;border:none;outline:none;background:transparent;font-size:15px;font-weight:600;color:#1c1c1e;font-family:inherit;text-align:right;padding:16px 0;-webkit-appearance:none;color-scheme:light;min-width:0;width:100%;cursor:pointer}
 .ios-fi::placeholder{color:#c7c7cc}
 .ios-fi.big{font-size:26px;font-weight:800}
 .ios-unit{font-size:13px;font-weight:700;color:#c7c7cc;margin-left:5px;flex-shrink:0}
@@ -319,9 +320,9 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
 </div>
 
 <div class="date-row">
-  <input type="date" class="date-inp" id="dFrom" onchange="render()">
+  <input type="date" class="date-inp" id="dFrom" onchange="render()" onclick="if(this.showPicker)this.showPicker()" style="min-height:44px">
   <span class="date-sep">—</span>
-  <input type="date" class="date-inp" id="dTo" onchange="render()">
+  <input type="date" class="date-inp" id="dTo" onchange="render()" onclick="if(this.showPicker)this.showPicker()" style="min-height:44px">
   <button class="date-clr" onclick="clearDates()">✕</button>
 </div>
 
@@ -346,14 +347,14 @@ body{font-family:'Frutiger','Nunito',-apple-system,sans-serif;background:#f5f5f7
     <div class="sheet-body">
       <div class="fg">
         <div class="ios-card">
-          <div class="ios-r">
+          <div class="ios-r" onclick="document.getElementById('fAmt').focus()">
             <span class="ios-rl">Shuma</span>
-            <input type="number" class="ios-fi big" id="fAmt" placeholder="" inputmode="decimal" min="0" onfocus="if(this.value==='0')this.value=''" onclick="this.select()">
+            <input type="number" class="ios-fi big" id="fAmt" placeholder="" inputmode="decimal" min="0" onfocus="if(this.value==='0')this.value=''" onclick="this.select();event.stopPropagation()">
             <span class="ios-unit">ден</span>
           </div>
-          <div class="ios-r">
+          <div class="ios-r" onclick="var d=document.getElementById('fDate');d.focus();if(d.showPicker)d.showPicker()">
             <span class="ios-rl">Data</span>
-            <input type="date" class="ios-fi" id="fDate" onclick="this.showPicker&&this.showPicker()">
+            <input type="date" class="ios-fi" id="fDate" onclick="event.stopPropagation();if(this.showPicker)this.showPicker()">
           </div>
         </div>
       </div>
